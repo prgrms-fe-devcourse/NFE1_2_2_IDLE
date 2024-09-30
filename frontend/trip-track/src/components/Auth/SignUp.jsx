@@ -15,6 +15,28 @@ const SignUp = () => {
         e.preventDefault();
         setError('');
         setMessage('');
+        
+        // full name 길이 확인
+        const isEninglish = /^[A-Za-z0-9\s]*$/.test(fullName); // 영문 및 숫자 체크
+        if (isEninglish) {
+            // 영문일 떄: 16자 이하
+            if (fullName.length > 16) {
+                setError('Full Name은 16자 이하이어야 합니다.');
+                return;
+            }
+        } else {
+            // 한글일 때: 8자 이하
+            if (fullName.length > 8) {
+                setError('Full Name은 8자 이하여야 합니다.');
+                return;
+            }
+        }
+
+        // 비밀번호 길이 확인
+        if (password.length < 8) {
+            setError('비밀번호는 8자 이상이어야 합니다.');
+            return;
+        }
 
         // 비밀번호 일치 여부 확인
         if (password !== confirmPassword) {
