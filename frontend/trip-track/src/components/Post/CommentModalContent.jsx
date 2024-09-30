@@ -41,7 +41,7 @@ const CommentModalContent = ({ comments }) => {
                     maxLength="300"
                 />
                 <div className="comment-footer">
-                    <span>{charCount}/300</span>
+                    <span className=''>{charCount}/300</span>
                     <button className="submit-comment" onClick={handleCommentSubmit}>
                         댓글 작성
                     </button>

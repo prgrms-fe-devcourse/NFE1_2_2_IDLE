@@ -1,10 +1,14 @@
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #002050;
+}
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 32, 80, 0.25);
     /* 반투명 배경 */
     display: flex;
     justify-content: center;
@@ -13,20 +17,29 @@
 }
 
 .modal-content {
-    background-color: #ffffff;
-    /* 흰색 배경 */
-    padding: 2rem;
+    background-color: #fff;
+    padding: 1rem;
     border-radius: 0.5rem;
+    border: 1px solid #0066ff;
     position: relative;
+    width: 21rem;
 }
 
 .modal-close {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.25rem;
+    width: 3rem;
+    height: 3rem;
+    background-color: #fff;
+    border: 1px solid #0066ff;
+    font-size: 1.5rem;
     cursor: pointer;
     color: #002050;
+}
+
+.modal-close:hover {
+    background-color: #0066ff;
+    border: 1px solid #0066ff;
+    color: #fff;
 }

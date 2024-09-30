@@ -1,0 +1,16 @@
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+button {
+    border: #fff 1px solid;
+    border-radius: 0.5rem;
+    background: none;
+    color: #002050;
+    font-size: 1rem;
+    
+}
+
+button:hover {
+    border: 1px solid #002050;
+}
