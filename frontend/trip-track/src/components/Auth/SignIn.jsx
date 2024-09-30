@@ -28,7 +28,6 @@ const SignIn = () => {
 
     return (
         <div>
-            <header/>
             <h3>Trip Track과 함께<br/>
                 여러분의 특별한 경험을<br/>
                 많은 사람들과 공유하세요!

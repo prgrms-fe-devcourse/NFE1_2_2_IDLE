@@ -1,56 +1,58 @@
-/* SignUpPage.css */
 .page-container {
   display: flex;
-  justify-content: center; /* 가로로 가운데 정렬 */
-  align-items: center; /* 세로로 가운데 정렬 */
-  height: 100vh; /* 전체 화면 높이 */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .logo {
-  margin-right: 20px; /* 로고와 회원가입 폼 사이에 여백 추가 */
+  width: 50%;
+  display: flex;
+  justify-content: center;
 }
 
 .logo img {
-  width: 200px; /* 로고 이미지 너비 설정 */
-  height: auto; /* 비율에 맞게 높이 자동 조정 */
+  width: 300px;
+  height: auto;
 }
 
 .form-section {
+  width: 50%;
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
-  justify-content: center; /* 세로 방향 가운데 정렬 */
-  align-items: center; /* 모든 요소를 중앙 정렬 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .form-section input {
-  width: 100%; /* 입력 필드 너비 100% */
-  padding: 10px; /* 패딩 추가 */
-  margin-bottom: 10px; /* 간격 추가 */
-  border: 1px solid #0066ff; /* 테두리 색상 */
-  border-radius: 5px; /* 테두리 모서리 둥글게 */
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #0066ff;
+  border-radius: 5px;
 }
 
 .form-section button {
-  width: 100%; /* 버튼 너비 100% */
-  padding: 10px; /* 패딩 추가 */
-  background-color: #002050; /* 버튼 배경 색상 */
-  color: white; /* 버튼 글자 색상 */
-  border: 1px solid #002050; /* 버튼 테두리 색상 */
-  border-radius: 5px; /* 버튼 모서리 둥글게 */
-  cursor: pointer; /* 마우스 커서 포인터로 변경 */
-  text-align: center; /* 버튼 텍스트 중앙 정렬 */
+  width: 100%;
+  padding: 10px;
+  background-color: #002050;
+  color: white;
+  border: 1px solid #002050;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
 }
 
 .form-section button:hover {
-  background-color: #0040ff; /* 버튼 호버 시 배경 색상 변경 */
+  background-color: #0040ff;
 }
 
 .error {
-  color: red; /* 에러 메시지 색상 */
-  text-align: center; /* 에러 메시지 중앙 정렬 */
+  color: red;
+  text-align: center;
 }
 
 .message {
-  color: green; /* 성공 메시지 색상 */
-  text-align: center; /* 성공 메시지 중앙 정렬 */
+  color: green;
+  text-align: center;
 }
