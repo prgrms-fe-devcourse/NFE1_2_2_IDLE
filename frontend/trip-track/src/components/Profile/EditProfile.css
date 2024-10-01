@@ -1,0 +1,53 @@
+.edit-my-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-container {
+  display: flex;
+  width: 80%; /* 전체 너비 */
+  margin: 20px 0;
+}
+
+.left-container {
+  flex: 1; /* 왼쪽 컨테이너에 남은 공간을 채우게 함 */
+  margin-right: 20px; /* 오른쪽 컨테이너와의 간격 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 중앙 정렬 */
+}
+
+.profile-image img {
+  width: 150px; /* 이미지 크기 */
+  height: 150px; /* 이미지 크기 */
+  border-radius: 5px; /* 원형으로 만들기 */
+  cursor: pointer; /* 클릭할 수 있도록 표시 */
+}
+
+.profile-bio {
+  margin-top: 10px; /* 이미지와 자기소개 사이의 간격 */
+}
+
+.profile-details {
+  flex: 1; /* 오른쪽 컨테이너에 남은 공간을 채우게 함 */
+}
+
+.profile-details input {
+  width: 100%;
+  padding: 0 10px;
+  margin-bottom: 10px; /* 아래쪽에 10px 마진 추가 */
+}
+
+.profile-details form {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: red;
+}
+
+.message {
+  color: green;
+}
