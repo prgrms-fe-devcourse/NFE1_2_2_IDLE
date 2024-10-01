@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './EditProfile.css';
+import './EditProfile.css'; // 스타일 파일
 import { useNavigate } from 'react-router-dom';
 
 // 기본 프로필 이미지 URL (예시)
@@ -32,6 +32,21 @@ const EditProfile = () => {
     setBio(userData.bio);
   }, []);
 
+  // 계정 삭제 핸들러
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm("정말로 계정을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      try {
+        await axios.delete('http://localhost:5000/api/delete-account');
+        alert('계정이 성공적으로 삭제되었습니다.');
+        navigate('/goodbye'); // 삭제 후 다른 페이지로 이동
+      } catch (err) {
+        console.error("계정 삭제 중 오류 발생:", err);
+        setError("계정 삭제 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
   // 프로필 이미지 변경 핸들러
   const handleProfileImageChange = () => {
     const newImageUrl = prompt("새 프로필 이미지 URL을 입력하세요:", profileImage);
@@ -46,24 +61,21 @@ const EditProfile = () => {
     setError('');
     setMessage('');
 
-    // 비밀번호 일치 여부 확인
     if (password && password !== confirmPassword) {
       setError('비밀번호가 일치하지 않습니다.');
       return;
     }
 
     try {
-      // 사용자 정보 업데이트 요청
-      const response = await axios.put('http://localhost:5000/api/update-profile', {
+      await axios.put('http://localhost:5000/api/update-profile', {
         fullName,
-        email, // 이메일은 읽기 전용이므로 그대로 사용
+        email,
         password, // 비밀번호가 입력된 경우만 포함
         bio,
         profileImage,
       });
       setMessage('정보가 성공적으로 업데이트되었습니다.');
-     
-      navigate('/profile'); // 프로필 페이지로 이동
+      navigate('/profile');
     } catch (err) {
       if (err.response) {
         setError(err.response.data.message);
@@ -75,28 +87,30 @@ const EditProfile = () => {
 
   return (
     <div className="edit-my-page">
-      <h3>내 정보 수정</h3>
       <div className="profile-container">
         <div className="left-container">
-            <div className="profile-image">
-                <img src={profileImage} alt="Profile" onClick={handleProfileImageChange} />
-                <p>프로필 이미지 클릭하여 변경</p>
-            </div>
-            <div className='profile-bio'>
-                <label>Introduction</label>
-                <textarea
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                    placeholder="자기소개"
-                    rows="4"
-                />
-            </div>
+          <div className="profile-image-container">
+            <img src={profileImage} alt="Profile" className="profile-image" />
+            <button className="edit-button" onClick={handleProfileImageChange}>
+              Edit
+            </button>
+          </div>
+          <div className="profile-bio">
+            <label>Introduction</label>
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="자기소개"
+              rows="4"
+            />
+          </div>
         </div>
         <div className="profile-details">
           {error && <p className="error">{error}</p>}
           {message && <p className="message">{message}</p>}
           <form onSubmit={handleSubmit}>
             <div>
+              <p>프로필 수정</p>
               <input
                 type="text"
                 value={fullName}
@@ -109,7 +123,7 @@ const EditProfile = () => {
               <input
                 type="email"
                 value={email}
-                readOnly // 이메일 입력 필드를 읽기 전용으로 설정
+                readOnly
                 placeholder="Email"
               />
             </div>
@@ -129,9 +143,11 @@ const EditProfile = () => {
                 placeholder="Confirm New Password"
               />
             </div>
-            <button type="submit">Save</button>
+            <button className="save-button" type="submit">Save</button>
           </form>
-          <p>Delete Account?</p>
+          <button className="delete-account-button" onClick={handleDeleteAccount}>
+            Delete Account?
+          </button>
         </div>
       </div>
     </div>
