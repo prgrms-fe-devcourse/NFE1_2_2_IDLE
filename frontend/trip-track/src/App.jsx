@@ -1,12 +1,10 @@
-import NotificationButton from "./components/Notification/NotificationButton";
-import PostDetailPage from "./pages/PostDetailPage";
+import MainPage from "./pages/MainPage";
+
 
 function App() {
   return (
     <>
-      <NotificationButton />
-      
-      <PostDetailPage />
+      <MainPage />
     </>
   );
 }
