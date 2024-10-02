@@ -1,71 +1,19 @@
 .page-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 0 20px;
+  justify-content: center; /* 가로로 중앙 정렬 */
+  align-items: center; /* 세로로 중앙 정렬 */
+  height: 100vh; /* 전체 화면 높이 */
+  padding: 0 20px; /* 좌우 패딩 추가 */
 }
 
+/* 로고 스타일 */
 .logo {
-  width: 50%;
-  display: flex;
-  justify-content: center;
+  margin-right: 0; /* 로고와 폼 사이에 간격 추가 */
+  margin-left: 100px;
 }
 
+/* 로고 이미지 */
 .logo img {
-  width: 300px;
+  width: 200px;
   height: auto;
-}
-
-.form-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  padding: 20px;
-}
-
-.form-section input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #0066ff;
-  border-radius: 5px;
-}
-
-.form-section button {
-  width: 100%;
-  padding: 10px;
-  background-color: #002050;
-  color: white;
-  border: 1px solid #002050;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.form-section button:hover {
-  background-color: #0040ff;
-}
-
-.error,
-.message {
-  text-align: center;
-}
-
-.page-container p {
-  text-align: center;
-  color: #333;
-}
-
-.page-container p a {
-  color: #002050;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.page-container p a:hover {
-  text-decoration: underline;
 }

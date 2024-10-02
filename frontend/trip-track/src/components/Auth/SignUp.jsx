@@ -1,116 +1,69 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './SignUp.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signUp } from "../../services/authService";
+import "./SignUp.css";
 
 const SignUp = () => {
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
 
-    // 폼 제출 핸들러
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setMessage('');
-        
-        // full name 길이 확인
-        const isEninglish = /^[A-Za-z0-9\s]*$/.test(fullName); // 영문 및 숫자 체크
-        if (isEninglish) {
-            // 영문일 떄: 16자 이하
-            if (fullName.length > 16) {
-                setError('Full Name은 16자 이하이어야 합니다.');
-                return;
-            }
-        } else {
-            // 한글일 때: 8자 이하
-            if (fullName.length > 8) {
-                setError('Full Name은 8자 이하여야 합니다.');
-                return;
-            }
-        }
+  const navigate = useNavigate();
 
-        // 비밀번호 길이 확인
-        if (password.length < 8) {
-            setError('비밀번호는 8자 이상이어야 합니다.');
-            return;
-        }
+  // 입력 변경 핸들러
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-        // 비밀번호 일치 여부 확인
-        if (password !== confirmPassword) {
-            setError('비밀번호가 일치하지 않습니다.');
-            return;
-        }
+  // 폼 제출 핸들러
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-        try {
-            // 회원가입 요청을 보냅니다.
-            const response = await axios.post('http://localhost:5000/api/register', {
-                fullName,
-                email,
-                password
-            });
-            setMessage(response.data.message);
-        } catch (err) {
-            if (err.response) {
-                setError(err.response.data.message);
-            } else {
-                setError('회원가입 중 오류가 발생했습니다.');
-            }
-        }
-    };
+    const { fullName, email, password, confirmPassword } = formData;
 
-    return (
-        <div className="form-container">
-            <h3>회원가입</h3>
-            {error && <p className="error">{error}</p>}
-            {message && <p className="message">{message}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input
-                        type="text"
-                        id="fullName"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Full Name"
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Confirm Password"
-                        required
-                    />
-                </div>
-                <button type="submit">Create Account</button>
-            </form>
-        </div>
-    );
+    // 비밀번호 일치 여부 확인
+    if (password !== confirmPassword) {
+      setError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    try {
+      // 회원가입 요청
+      await signUp({ fullName, email, password });
+
+      // 회원가입 성공 후 로그인 페이지로 리다이렉션
+      navigate("/login");
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("회원가입 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
+  return (
+    <div className="signup-form">
+      <h3>회원가입</h3>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="fullName"
+          value={formData.fullName}
+          onChange={handleChange}
+          placeholder="Full Name"
+          required
+        />
+        <button type="submit">Create Account</button>
+      </form>
+    </div>
+  );
 };
 
 export default SignUp;

@@ -1,18 +1,17 @@
-.form-container {
+.signup-form {
   margin: 0 auto; /* 가운데 정렬 */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.form-container h3 {
+.signup-form h3 {
   text-align: center;
   color: #002050;
   width: 100%;
-  margin-bottom: 20px;
 }
 
-.form-container input {
+.signup-form input {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
@@ -20,7 +19,7 @@
   border-radius: 5px;
 }
 
-.form-container button {
+.signup-form button {
   width: 100%;
   background-color: #002050;
   color: white;
@@ -30,7 +29,7 @@
   text-align: center;
 }
 
-.form-container button:hover {
+.signup-form button:hover {
   background-color: #0040ff; /* 버튼 호버 시 배경색 변경 */
 }
 
