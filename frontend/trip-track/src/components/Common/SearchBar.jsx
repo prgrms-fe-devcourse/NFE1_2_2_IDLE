@@ -42,16 +42,16 @@ const SearchBar = ({ onSearch, onFilter, onTabChange }) => {
 
                 <div className="search-input">
                     <div className="search-bar">
-                    <input
-                    type="text"
-                    value={query}
-                    onChange={handleInputChange}
-                    placeholder="포스트 또는 @사용자 검색"
-                    className="search-input"
-                />
-                <button onClick={handleSearch} className="search-btn">
-                    🔍
-                </button>
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={handleInputChange}
+                            placeholder="포스트 또는 @사용자 검색"
+                            className="search-input"
+                        />
+                        <button onClick={handleSearch} className="search-btn">
+                            🔍
+                        </button>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@ const SearchBar = ({ onSearch, onFilter, onTabChange }) => {
                 {activeTab === 'New' && (
                     <div className="dropdown">
                         <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="dropdown-button">
-                            {selectedOption}
+                            {selectedOption} 🔽
                         </button>
                         {isDropdownOpen && (
                             <ul className="dropdown-menu">

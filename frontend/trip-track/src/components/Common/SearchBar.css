@@ -1,12 +1,20 @@
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #002050;
+    box-sizing: border-box;
+}
+
 /* 검색 바 전체 컨테이너 */
 .search-bar-container {
+    margin: 0.5rem 2rem;
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */
+    align-items: center;
 }
 
 .search-bar-wrap {
     display: flex;
+    align-items: center;
 }
 
 /* 검색 인풋과 버튼 컨테이너 */
@@ -25,6 +33,7 @@
     font-size: 1rem;
     border-radius: 0.5rem;
     width: 20rem;
+    margin: 0 auto;
 }
 
 .search-btn {
@@ -37,7 +46,6 @@
 .filter-btn {
     width: auto;
     height: 3rem;
-
     margin-left: 0.5rem;
     padding: 1rem;
     background-color: #0066ff;
@@ -60,18 +68,23 @@
 }
 
 .dropdown-button {
+    width: auto;
+    height: 3rem;
+    font-size: 1rem;
     background-color: transparent;
     border: 1px solid #0066ff;
     padding: 0.5rem;
     cursor: pointer;
     border-radius: 0.5rem;
     color: #0066ff;
+    margin-right: 1rem;
 }
 
 .dropdown-menu {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 0.25rem);
     left: 0;
+    width:  5rem;
     background-color: white;
     border: 1px solid #0066ff;
     border-radius: 0.5rem;
@@ -79,6 +92,7 @@
     padding: 0;
     margin: 0;
     z-index: 1;
+    font-size: 1rem;
 }
 
 .dropdown-menu li {
@@ -98,6 +112,8 @@
 }
 
 .tab-button {
+    width: auto;
+    height: ;
     padding: 0.5rem 1rem;
     background-color: transparent;
     border: none;
