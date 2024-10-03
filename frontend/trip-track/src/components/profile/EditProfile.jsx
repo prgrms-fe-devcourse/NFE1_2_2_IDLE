@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './EditProfile.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import api from "../../utils/api";
+import { useNavigate } from "react-router-dom";
+import "./EditProfile.css";
+import axios from "axios";
 
 // 기본 프로필 이미지 URL
-const defaultProfileImage = 'https://via.placeholder.com/150';
+const defaultProfileImage = "https://via.placeholder.com/150";
 
 const EditProfile = () => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState(defaultProfileImage);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const userId = localStorage.getItem('userId');
-  const loginToken = localStorage.getItem('token'); // 토큰 가져오기
+  const userId = localStorage.getItem("userId");
+  const loginToken = localStorage.getItem("token"); // 토큰 가져오기
 
   // 사용자 데이터 불러오기
   useEffect(() => {
@@ -27,11 +28,15 @@ const EditProfile = () => {
           headers: { Authorization: `Bearer ${loginToken}` },
         });
         const userData = response.data;
-        setFullName(userData.fullName || ''); // 값이 없으면 빈 문자열
-        setEmail(userData.email || ''); // 값이 없으면 빈 문자열
-        setImage(userData.image || defaultProfileImage);
-      } catch (err) {
+        setFullName(userData.fullName || "");
+        console.log(fullName);
+        setEmail(userData.email || ""); 
+        console.log(email);
+        setImage(userData.image || defaultProfileImage); 
+        console.log(image);
+      } catch (error) {
         setError("사용자 정보를 불러오는 데 오류가 발생했습니다.");
+        console.log(error.message);
       }
     };
 
@@ -64,7 +69,7 @@ const EditProfile = () => {
       return false;
     }
 
-    setError('');
+    setError("");
     return true; // 모든 검사가 통과하면 true 반환
   };
 
@@ -78,8 +83,8 @@ const EditProfile = () => {
       if (password) {
         await updatePassword(); // 비밀번호 변경
       }
-      setMessage('정보가 성공적으로 업데이트되었습니다.');
-      navigate('/profile'); // 프로필 페이지로 리다이렉션
+      setMessage("정보가 성공적으로 업데이트되었습니다.");
+      navigate("/profile"); // 프로필 페이지로 리다이렉션
     } catch (err) {
       console.error("프로필 수정 중 오류 발생:", err);
       setError("프로필 수정 중 오류가 발생했습니다.");
@@ -89,22 +94,20 @@ const EditProfile = () => {
   // 사용자 정보 업데이트
   const updateUser = async () => {
     const requestBody = {
-      fullName,
+      fullName: fullName || undefined, // 변경하지 않은 경우에는 undefined로 설정
       email,
     };
 
-    const response = await fetch("/settings/update-user", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${loginToken}`,
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`사용자 정보 업데이트 실패: ${errorText}`);
+    try {
+      await api.put("/settings/update-user", requestBody, {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+        },
+      });
+      console.log("사용자 정보가 성공적으로 업데이트되었습니다.");
+    } catch (err) {
+      console.error("사용자 정보 업데이트 실패:", err.response?.data || err.message);
+      setError("사용자 정보 업데이트 실패");
     }
   };
 
@@ -112,18 +115,16 @@ const EditProfile = () => {
   const updatePassword = async () => {
     const requestBody = { password };
 
-    const response = await fetch("/settings/update-password", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${loginToken}`,
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`비밀번호 변경 실패: ${errorText}`);
+    try {
+      await api.put("/settings/update-password", requestBody, {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+        },
+      });
+      console.log("비밀번호가 성공적으로 변경되었습니다.");
+    } catch (err) {
+      console.error("비밀번호 변경 실패:", err.response?.data || err.message);
+      setError("비밀번호 변경 실패");
     }
   };
 
@@ -141,7 +142,9 @@ const EditProfile = () => {
         <div className="left-container">
           <div className="profile-image-container">
             <img src={image} alt="Profile" className="profile-image" />
-            <button className="edit-button" onClick={handleProfileImageChange}>Edit</button>
+            <button className="edit-button" onClick={handleProfileImageChange}>
+              Edit
+            </button>
           </div>
         </div>
         <div className="profile-details">
@@ -155,16 +158,10 @@ const EditProfile = () => {
                 value={fullName} // fullName 값이 없으면 빈 문자열로 설정
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Full Name"
-                required
               />
             </div>
             <div>
-              <input
-                type="email"
-                value={email}
-                readOnly
-                placeholder="Email"
-              />
+              <input type="email" value={email} readOnly placeholder="Email" />
             </div>
             <div>
               <input
@@ -182,7 +179,9 @@ const EditProfile = () => {
                 placeholder="Confirm Password"
               />
             </div>
-            <button className="save-button" type="submit">저장</button>
+            <button className="save-button" type="submit">
+              저장
+            </button>
           </form>
         </div>
       </div>

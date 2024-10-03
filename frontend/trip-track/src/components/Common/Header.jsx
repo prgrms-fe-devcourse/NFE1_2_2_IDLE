@@ -15,18 +15,17 @@ const Header = () => {
         <h1>Trip Track</h1>
       </div>
       <nav>
-        <ul className="nav-links">
+      <ul className="nav-links">
           {userId ? (
-            <>
-              <li>
+            <li className="profile-container">
+              <Link to="/edit-profile">
                 <img src={image} alt="Profile" className="profile-image" />
-              </li>
-              <li>
-                <SignOutButton />
-              </li>
-            </>
+              </Link>
+              <SignOutButton />
+            </li>
           ) : (
             <>
+              <Link to="/edit-profile"><button>Edit profile</button></Link>
               <li>
                 <Link to="/signin">Sign In</Link>
               </li>
