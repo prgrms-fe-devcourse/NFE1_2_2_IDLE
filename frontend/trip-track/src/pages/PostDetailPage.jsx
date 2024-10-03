@@ -1,4 +1,5 @@
 import PostContent from "../components/Post/PostContent";
+import PostHeader from "../components/Post/PostHeader";
 
 
 const PostDetailPage = () => {
@@ -30,6 +31,7 @@ const PostDetailPage = () => {
 
   return (
     <div>
+      <PostHeader />
       {/* 다른 포스트 관련 정보 표시 */}
       <PostContent locationData={dummyLocationData} />
     </div>
