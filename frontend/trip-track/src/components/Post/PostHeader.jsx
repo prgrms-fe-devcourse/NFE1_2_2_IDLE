@@ -6,7 +6,7 @@ const dummyPostHeader = {
     purpose: '휴양, 힐링',
     groupType: '친구',
     season: '겨울',
-    isAuthor: true, // 작성자인지 여부 (true면 수정/삭제 버튼, false면 공유 버튼 표시)
+    isAuthor: false, // 작성자인지 여부 (true면 수정/삭제 버튼, false면 공유 버튼 표시)
 };
 
 const PostHeader = () => {
