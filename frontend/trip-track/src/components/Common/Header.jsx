@@ -1,20 +1,61 @@
-import React from 'react';
-
-const headerHeight = (80 / window.innerHeight) * 100;
-const buttonStyle = {
-  width: "46px",
-  height: "46px",
-};
-
-const profileImageStyle = {
-  width: "46px",
-  height: "46px",
-  borderRadius: "50%",
-  marginRight: "16px",
-  cursor: "pointer",
-};
+import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from "recoil";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const [showModal, setShowModal] = useState(false);
+  
+// 사용자 정보를 로드하는 useEffect
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId"); // localStorage에서 userId 가져오기
+  if (token && userId) {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch(
+          `https://kdt.frontend.5th.programmers.co.kr:5008/users/${userId}`, // userId 사용
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const userData = await response.json();
+          setCurrentUser(userData); // 사용자 정보 Recoil에 저장
+        } else {
+          localStorage.removeItem("token"); // 잘못된 토큰인 경우 삭제
+          localStorage.removeItem("userId"); // userId도 삭제
+          setCurrentUser(null); // 로그아웃 상태로 전환
+        }
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }
+}, [setCurrentUser]);
+
+
+  const headerHeight = (80 / window.innerHeight) * 100;
+  const buttonStyle = {
+    width: "46px",
+    height: "46px",
+  };
+
+const profileImageStyle = {
+    width: "46px",
+    height: "46px",
+    borderRadius: "50%",
+    marginRight: "16px",
+    cursor: "pointer",
+  };
   return (
     <header
     className="navbar bg-body-light"
