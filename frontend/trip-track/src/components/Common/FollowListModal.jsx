@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser, followUser, unfollowUser } from "../../services/authService";
+import { sendNotification } from "../../services/notificationService";  // 알림 서비스 import
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUserState } from "../../recoil/atom";
 
@@ -46,7 +47,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
       );
       setFollowingFullNames(fetchedFollowing);
     } catch (error) {
-      toast.error("Failed to load users."); // 데이터 로드 실패 시 사용자에게 알림
+      console.error("Failed to load users:", error);
     } finally {
       setLoading(false); // 데이터를 모두 불러오면 로딩 상태 해제
     }
@@ -57,6 +58,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
     if (isProcessing) return; // 중복 팔로우 방지
     setIsProcessing(true); // 요청 시작
     try {
+      // 팔로우 요청
       const newFollow = await followUser(userId);
       setFollowingFullNames((prev) => [...prev, { userId }]);
 
@@ -65,9 +67,18 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
         ...prevUser,
         following: [...prevUser.following, newFollow],
       }));
-      toast.success("Successfully followed!");  // 성공 시 사용자에게 알림
+
+      // 팔로우 알림 보내기
+      await sendNotification({
+        notificationType: "FOLLOW",
+        notificationTypeId: newFollow._id,  // 생성된 팔로우 ID
+        userId: userId,  // B 사용자 ID (팔로우 당하는 사람)
+        postId: null,  // 팔로우이므로 postId는 null
+      });
+
+      console.log("Notification sent!");
     } catch (error) {
-      toast.error("Failed to follow user.");  // 팔로우 실패 시 알림
+      console.error("Failed to follow user:", error);
     } finally {
       setIsProcessing(false); // 요청 완료 후 다시 팔로우 가능
     }
@@ -88,9 +99,10 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
         ...prevUser,
         following: prevUser.following.filter((follow) => follow.user !== userId),
       }));
-      toast.success("Successfully unfollowed!");  // 성공 시 사용자에게 알림
+
+      console.log("Unfollowed successfully!");
     } catch (error) {
-      toast.error("Failed to unfollow user.");  // 언팔로우 실패 시 알림
+      console.error("Failed to unfollow user:", error);
     } finally {
       setIsProcessing(false); // 요청 완료 후 다시 언팔로우 가능
     }
@@ -108,7 +120,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
     navigate(`/users/${userId}`);
   };
 
-  // 로그인한 사용자가 해당 유저를 팔로우하고 있는지 확인
+  // 로그인한 사용자가 해당 유저를 팔로우하고 있는지 확인하는 함수
   const isFollowingUser = (userId) => {
     return currentUser.following.some((follow) => follow.user === userId);
   };
@@ -174,7 +186,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
                     followers={filteredFollowers}
                     handleUserClick={handleUserClick}
                     handleFollow={handleFollow}
-                    isFollowingUser={isFollowingUser}
+                    isFollowingUser={isFollowingUser} // 로그인한 사용자가 팔로우 중인지 확인
                   />
                 )}
 
@@ -184,6 +196,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
                     following={filteredFollowing}
                     handleUserClick={handleUserClick}
                     handleUnfollow={handleUnfollow}
+                    isFollowingUser={isFollowingUser} // 로그인한 사용자가 팔로우 중인지 확인
                   />
                 )}
               </>
@@ -222,8 +235,8 @@ const FollowerList = ({ followers, handleUserClick, handleFollow, isFollowingUse
           onClick={(e) => {
             e.stopPropagation();
             if (isFollowingUser(user.userId)) {
-              // 이미 팔로우 중이라면 버튼을 비활성화
-              toast.info("Already following this user.");
+              // 이미 팔로우 중이라면 언팔로우 버튼 표시
+              handleUnfollow(user._id, user.userId);
             } else {
               handleFollow(user.userId); // 팔로우 실행
             }
@@ -245,7 +258,7 @@ const FollowerList = ({ followers, handleUserClick, handleFollow, isFollowingUse
 );
 
 // 팔로잉 리스트 컴포넌트
-const FollowingList = ({ following, handleUserClick, handleUnfollow }) => (
+const FollowingList = ({ following, handleUserClick, handleUnfollow, isFollowingUser }) => (
   <ul>
     {following.map((user) => (
       <li
@@ -270,18 +283,22 @@ const FollowingList = ({ following, handleUserClick, handleUnfollow }) => (
         <button
           onClick={(e) => {
             e.stopPropagation();
-            handleUnfollow(user._id, user.userId); // 언팔로우 실행
+            if (isFollowingUser(user.userId)) {
+              handleUnfollow(user._id, user.userId); // 언팔로우 실행
+            } else {
+              handleFollow(user.userId); // 팔로우 실행
+            }
           }}
           style={{
             marginLeft: "auto",
-            backgroundColor: "#002050",
+            backgroundColor: isFollowingUser(user.userId) ? "#002050" : "#0066ff",
             color: "white",
             border: "none",
             borderRadius: "5px",
             padding: "5px 10px",
           }}
         >
-          Unfollow
+          {isFollowingUser(user.userId) ? "Unfollow" : "Follow"}
         </button>
       </li>
     ))}

@@ -1,30 +1,36 @@
-import axios from "axios";
+// src/services/notificationService.js
 
-const API_HOST = "https://kdt.frontend.5th.programmers.co.kr:5008";
+import axiosInstance from "./axiosInstance";  // axios 인스턴스 사용
 
-// 알림 목록 가져오기
-export const getNotifications = async (token) => {
-  const response = await axios.get(`${API_HOST}/notifications`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data;
+// 알림 생성 함수
+export const sendNotification = async (notificationData) => {
+  try {
+    const response = await axiosInstance.post("/notifications/create", notificationData);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to send notification:", error);
+    throw error;
+  }
+};
+
+// 나의 알림 목록 불러오기
+export const getNotifications = async () => {
+  try {
+    const response = await axiosInstance.get("/notifications");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch notifications:", error);
+    throw error;
+  }
 };
 
 // 알림 읽음 처리
-export const markAsRead = async (notificationId, token) => {
-  await axios.put(
-    `${API_HOST}/notifications/seen`, // API 경로 수정
-    { id: notificationId }, // 알림 ID 전달
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-};
-
-// 알림 삭제
-export const deleteNotifications = async (notificationIds, token) => {
-  await axios.delete(`${API_HOST}/notifications`, {
-    data: { ids: notificationIds }, // 삭제할 알림 ID 목록
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const markNotificationsAsSeen = async () => {
+  try {
+    const response = await axiosInstance.put("/notifications/seen");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to mark notifications as seen:", error);
+    throw error;
+  }
 };
