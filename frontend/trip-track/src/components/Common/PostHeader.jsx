@@ -1,12 +1,14 @@
+// PostHeader.jsx
+
 import React, { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
 const PostHeader = ({ activeTab, onFilterChange, isCurrentUser, onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState(""); // 검색 상태 추가
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (e) => {
     e.preventDefault();
-    onSearch(searchQuery); // 검색 기능 실행
+    onSearch(searchQuery);
   };
 
   return (
@@ -18,7 +20,7 @@ const PostHeader = ({ activeTab, onFilterChange, isCurrentUser, onSearch }) => {
           placeholder="포스트 검색"
           aria-label="Search"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // 검색어 입력 시 상태 업데이트
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="btn btn-outline-primary" type="submit">
           <CiSearch />
@@ -35,16 +37,14 @@ const PostHeader = ({ activeTab, onFilterChange, isCurrentUser, onSearch }) => {
           </button>
         </li>
         {isCurrentUser && (
-          <>
-            <li className="nav-item">
-              <button
-                className={`nav-link ${activeTab === "Likes" ? "active" : ""}`}
-                onClick={() => onFilterChange("Likes")}
-              >
-                Likes
-              </button>
-            </li>
-          </>
+          <li className="nav-item">
+            <button
+              className={`nav-link ${activeTab === "Likes" ? "active" : ""}`}
+              onClick={() => onFilterChange("Likes")}
+            >
+              Likes
+            </button>
+          </li>
         )}
       </ul>
     </div>

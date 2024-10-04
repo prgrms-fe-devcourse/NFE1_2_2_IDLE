@@ -5,7 +5,7 @@ import { sendNotification } from "../../services/notificationService";  // 알�
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUserState } from "../../recoil/atom";
 
-const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
+const FollowListModal = ({ followers, following }) => {
   const [followersFullNames, setFollowersFullNames] = useState([]);
   const [followingFullNames, setFollowingFullNames] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,6 +14,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
   const navigate = useNavigate();
   const currentUser = useRecoilValue(currentUserState);  // 로그인한 사용자 정보 가져오기
   const setCurrentUser = useSetRecoilState(currentUserState);  // 상태 업데이트
+  const [modalActiveTab, setModalActiveTab] = useState("followers"); // 모달 내 별도 activeTab 상태
 
   // 팔로워 및 팔로잉 유저 이름을 불러오는 함수
   const fetchUserNames = async () => {
@@ -155,16 +156,16 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
                 <ul className="nav nav-underline justify-content-center">
                   <li className="nav-item">
                     <button
-                      className={`nav-link ${activeTab === "followers" ? "active" : ""}`}
-                      onClick={() => setActiveTab("followers")}
+                      className={`nav-link ${modalActiveTab  === "followers" ? "active" : ""}`}
+                      onClick={() => setModalActiveTab("followers")}
                     >
                       Followers
                     </button>
                   </li>
                   <li className="nav-item">
                     <button
-                      className={`nav-link ${activeTab === "following" ? "active" : ""}`}
-                      onClick={() => setActiveTab("following")}
+                      className={`nav-link ${modalActiveTab  === "following" ? "active" : ""}`}
+                      onClick={() => setModalActiveTab("following")}
                     >
                       Following
                     </button>
@@ -175,13 +176,13 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
                 <input
                   type="text"
                   className="form-control mb-3"
-                  placeholder={`${activeTab} 사용자 검색`}
+                  placeholder={`${modalActiveTab} 사용자 검색`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
 
                 {/* 팔로워 리스트 */}
-                {activeTab === "followers" && (
+                {modalActiveTab === "followers" && (
                   <FollowerList
                     followers={filteredFollowers}
                     handleUserClick={handleUserClick}
@@ -193,7 +194,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
                 )}
 
                 {/* 팔로잉 리스트 */}
-                {activeTab === "following" && (
+                {modalActiveTab === "following" && (
                   <FollowingList
                     following={filteredFollowing}
                     handleUserClick={handleUserClick}
