@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUserState } from "../recoil/atom";
@@ -98,6 +98,7 @@ const UserProfilePage = () => {
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
+
   return (
     <>
       {userData && (

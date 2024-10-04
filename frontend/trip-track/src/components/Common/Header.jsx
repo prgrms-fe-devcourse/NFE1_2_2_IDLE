@@ -154,7 +154,7 @@ const Header = () => {
                 }
                 alt="Profile"
                 style={profileImageStyle}
-                onClick={() => navigate(`/user/${currentUser._id}`)}
+                onClick={() => navigate(`/users/${currentUser._id}`)}
               />
 
               <button type="button" className="btn btn-outline-primary me-2">

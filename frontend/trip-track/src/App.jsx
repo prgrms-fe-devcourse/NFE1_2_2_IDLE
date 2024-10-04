@@ -23,7 +23,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home/>} />
               <Route
-                path="/user/:userId"
+                path="/users/:userId"
                 element={
                   <PrivateRoute>
                     <UserProfilePage />
