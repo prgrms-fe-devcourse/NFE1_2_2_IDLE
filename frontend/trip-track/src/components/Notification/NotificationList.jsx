@@ -7,7 +7,7 @@ import {
 import { formatTimeAgo } from "../../utils/formatDate";
 import { useNavigate } from "react-router-dom";
 
-const NotificationModal = ({ setShowModal }) => {
+const NotificationList = ({ setShowModal }) => {
   const [notifications, setNotifications] = useState([]);
   const [selectedNotifications, setSelectedNotifications] = useState([]); // 선택된 알림을 저장
   const navigate = useNavigate();
@@ -123,4 +123,4 @@ const NotificationModal = ({ setShowModal }) => {
   );
 };
 
-export default NotificationModal;
+export default NotificationList;

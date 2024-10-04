@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { currentUserState } from "../recoil/atom";
 
-const SignInPage = () => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const setCurrentUser = useSetRecoilState(currentUserState);
@@ -69,4 +69,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignIn;

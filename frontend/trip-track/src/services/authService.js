@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance"; // axiosInstance로 변경
+import axiosInstance from "./axionsInstance"; // axiosInstance로 변경
 
 export const getUsers = async () => {
   const response = await axiosInstance.get("/users/get-users");

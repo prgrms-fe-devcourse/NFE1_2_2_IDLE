@@ -1,6 +1,6 @@
 import React from "react";
 
-const HomePage = () => {
+const Home = () => {
 
   return (
     <div className="container mt-4">
@@ -11,4 +11,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Home;
