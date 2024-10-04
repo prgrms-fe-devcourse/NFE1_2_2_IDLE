@@ -8,8 +8,8 @@ import Home from './pages/Home';
 import SignIn from "./Auth/SignIn";
 import NotFoundPage from './components/Common/NotFoundPage';
 import UserProfilePage from "./pages/UserProfilePage";
-import PrivateRoute from "./components/Auth/PrivateRoute";
-import LoadUserFromLocalStorage from "./components/Auth/LoadUserFromLocalStorage"; // 로그인 상태를 유지하는 컴포넌트
+import PrivateRoute from "./Auth/PrivateRoute";
+import LoadUserFromLocalStorage from "./hooks/LoadUserFromLocalStorage";// 로그인 상태를 유지하는 컴포넌트
 
 const queryClient = new QueryClient();
 

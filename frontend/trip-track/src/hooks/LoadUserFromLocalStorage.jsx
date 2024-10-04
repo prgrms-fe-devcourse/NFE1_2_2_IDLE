@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import axios from "axios";
-import { currentUserState } from "../../recoil/atom";
+import { currentUserState } from "../recoil/atom";
 
 const LoadUserFromLocalStorage = () => {
   const setCurrentUser = useSetRecoilState(currentUserState);
