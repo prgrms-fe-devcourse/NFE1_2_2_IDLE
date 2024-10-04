@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUser, followUser, unfollowUser } from "../../api/userApi";
+import { getUser, followUser, unfollowUser } from "../../services/userApi";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUserState } from "../../recoil/atom";
 

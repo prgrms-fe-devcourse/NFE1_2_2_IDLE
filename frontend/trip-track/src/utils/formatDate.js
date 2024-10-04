@@ -1,4 +1,3 @@
-// src/utils/formatDate
 export const formatTimeAgo = (date) => {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
   let interval;

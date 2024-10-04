@@ -1,4 +1,3 @@
-// components/Common/PostCard.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";

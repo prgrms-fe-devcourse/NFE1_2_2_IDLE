@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../Common/Header";
+import Header from "../components/Common/Header"
 
 const MainLayout = ({ children }) => {
   return (
