@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signIn } from "../../services/authService";
 import Logo from "../../assets/images/logo.png";
 import "./SignIn.css";
 import api from "../../utils/api";

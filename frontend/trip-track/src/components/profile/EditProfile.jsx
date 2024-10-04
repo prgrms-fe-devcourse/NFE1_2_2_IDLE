@@ -13,6 +13,7 @@ const EditProfile = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState(defaultProfileImage);
+  const [coverImage, setCoverImage] = useState(""); // 자기소개글
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -24,7 +25,7 @@ const EditProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`/users/${userId}`, {
+        const response = await api.get(`/users/${userId}`, {
           headers: { Authorization: `Bearer ${loginToken}` },
         });
         const userData = response.data;
@@ -34,6 +35,7 @@ const EditProfile = () => {
         console.log(email);
         setImage(userData.image || defaultProfileImage); 
         console.log(image);
+        setCoverImage(userData.coverImage || "");
       } catch (error) {
         setError("사용자 정보를 불러오는 데 오류가 발생했습니다.");
         console.log(error.message);
@@ -95,7 +97,7 @@ const EditProfile = () => {
   const updateUser = async () => {
     const requestBody = {
       fullName: fullName || undefined, // 변경하지 않은 경우에는 undefined로 설정
-      email,
+      email
     };
 
     try {
@@ -146,6 +148,10 @@ const EditProfile = () => {
               Edit
             </button>
           </div>
+          <input
+              type="text"
+              value={coverImage}>
+            </input>
         </div>
         <div className="profile-details">
           {error && <p className="error">{error}</p>}
