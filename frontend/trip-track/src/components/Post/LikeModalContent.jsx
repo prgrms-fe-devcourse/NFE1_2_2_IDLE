@@ -1,4 +1,4 @@
-import './LikeModalContent.css';  // 스타일을 정의한 파일이 있다면 import
+import './LikeModalContent.css';
 
 const LikeModalContent = ({ usersLiked }) => {
     return (
