@@ -31,7 +31,7 @@ function App() {
                 }
               />
               <Route path="/login" element={<SignIn />} />
-              <Route path="/register" element={<div>SignUp Page로 이동</div>} />
+              <Route path="/signup" element={<div>SignUp Page로 이동</div>} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </MainLayout>

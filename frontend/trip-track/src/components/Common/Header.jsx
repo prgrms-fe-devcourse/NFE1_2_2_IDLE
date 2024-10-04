@@ -185,7 +185,7 @@ const Header = () => {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/signup")}
               >
                 Sign Up
               </button>

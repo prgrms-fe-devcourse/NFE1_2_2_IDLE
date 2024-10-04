@@ -89,7 +89,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
         bootstrapModal.hide();
       }
     }
-    navigate(`/user/${userId}`);
+    navigate(`/users/${userId}`);
   };
 
   // 로그인한 사용자가 팔로우했는지 여부 체크 함수
