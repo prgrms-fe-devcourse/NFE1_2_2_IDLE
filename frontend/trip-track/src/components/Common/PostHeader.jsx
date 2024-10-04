@@ -44,16 +44,6 @@ const PostHeader = ({ activeTab, onFilterChange, isCurrentUser, onSearch }) => {
                 Likes
               </button>
             </li>
-            <li className="nav-item">
-              <button
-                className={`nav-link ${
-                  activeTab === "Temporary Saved" ? "active" : ""
-                }`}
-                onClick={() => onFilterChange("Temporary Saved")}
-              >
-                Temporary Saved
-              </button>
-            </li>
           </>
         )}
       </ul>

@@ -36,18 +36,6 @@ const PostList = ({ userId, filter, searchQuery }) => {
               })
             );
           }
-
-          // 임시 저장한 포스트 가져오기
-          else if (filter === "Temporary Saved") {
-            fetchedPosts = await Promise.all(
-              user.temporarySaved.map(async (postId) => {
-                const postResponse = await axios.get(
-                  `https://kdt.frontend.5th.programmers.co.kr:5008/posts/${postId}`
-                );
-                return postResponse.data;
-              })
-            );
-          }
         }
 
         // 중복된 포스트 제거 (post._id 기준)

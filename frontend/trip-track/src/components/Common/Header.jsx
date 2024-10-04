@@ -113,6 +113,7 @@ const Header = () => {
       }}
     >
       <div className="container-fluid d-flex justify-content-between align-items-center">
+        {/* 로고 */}
         <a className="navbar-brand d-flex align-items-center" href="/">
           <img
             src={`${import.meta.env.BASE_URL}images/logo.png`}
@@ -125,6 +126,7 @@ const Header = () => {
           <span style={{ fontSize: "32px", fontWeight: 700 }}>Trip Track</span>
         </a>
 
+        {/* 알림 */}
         <div className="d-flex align-items-center">
           {currentUser ? (
             <>
@@ -147,9 +149,10 @@ const Header = () => {
                 {showModal && <NotificationModal setShowModal={setShowModal} />}
               </div>
 
+              {/* 프로필 이미지 */}
               <img
                 src={
-                  currentUser.profileImage ||
+                  currentUser.image ||
                   `${import.meta.env.BASE_URL}images/defaultProfile.png`
                 }
                 alt="Profile"
