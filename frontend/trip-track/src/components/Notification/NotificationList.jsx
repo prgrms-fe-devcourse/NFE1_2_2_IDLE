@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
+  sendNotification,
   getNotifications,
-  markAsRead,
-  deleteNotifications,
+  markNotificationsAsSeen,
 } from "../../services/notificationService"
 import { formatTimeAgo } from "../../utils/formatDate";
 import { useNavigate } from "react-router-dom";

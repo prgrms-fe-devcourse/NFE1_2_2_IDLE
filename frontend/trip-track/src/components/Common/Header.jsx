@@ -3,7 +3,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { useRecoilState } from "recoil";
 import { currentUserState, notificationListState } from "../../recoil/atom";
 import NotificationModal from "../Notification/NotificationList";
-import { getNotifications, markAsRead } from "../../services/notificationService";
+import { getNotifications, markNotificationsAsSeen } from "../../services/notificationService";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -79,7 +79,7 @@ const Header = () => {
     notifications.forEach((notification) => {
       if (!notification.seen) {
         const token = localStorage.getItem("token");
-        markAsRead(notification._id, token);
+        markNotificationsAsSeen(notification._id, token);
       }
     });
     setUnreadCount(0);
