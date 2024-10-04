@@ -18,7 +18,7 @@ const UserProfile = ({
         <div className="flex-shrink-0">
           <img
             src={
-              userData.profileImage ||
+              userData.image ||
               `${import.meta.env.BASE_URL}images/defaultProfile.png`
             }
             alt="Profile"
@@ -82,7 +82,7 @@ const UserProfile = ({
             className="mt-2"
             style={{ maxWidth: "50%", minHeight: "50px", overflow: "hidden" }}
           >
-            {userData.bio || "No bio available"}
+            {userData.coverImage || "No bio available"}
           </div>
         </div>
       </div>
