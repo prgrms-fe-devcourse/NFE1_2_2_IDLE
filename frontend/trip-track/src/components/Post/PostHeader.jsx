@@ -1,44 +1,14 @@
-import  { useEffect, useState } from 'react';
-import './PostHeader.css'; // 스타일링 파일은 따로 작성해주세요.
-import { getPostById, deletePostById } from '../../../../../backend/api'; // API 함수 가져오기
-import { useNavigate } from 'react-router-dom'; 
+import { deletePostById } from '../../../../../backend/api'; // API 함수 가져오기
+import './PostHeader.css'; // 스타일 파일 임포트
+import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate
 
-const PostHeader = ({ postId }) => {
-    const [postHeader, setPostHeader] = useState({
-        title: '',
-        purpose: '',
-        groupType: '',
-        season: '',
-        isAuthor: false, // 작성자인지 여부
-    });
-    const navigate = useNavigate(); 
-
-    // API 호출로 데이터 가져오기
-    useEffect(() => {
-        const fetchPostHeader = async () => {
-            try {
-                const data = await getPostById(postId); // postId로 API 호출
-                setPostHeader({
-                    title: data.title, // 포스트 제목
-                    purpose: data.tripPurpose, // 여행 목적
-                    groupType: data.tripGroupType, // 인원 유형
-                    season: data.season, // 계절
-                    isAuthor: data.isAuthor, // 작성자인지 여부
-                });
-            } catch (error) {
-                console.error('Error fetching post header:', error);
-            }
-        };
-
-        fetchPostHeader();
-    }, [postId]);
-
-    const { title, purpose, groupType, season, isAuthor } = postHeader;
+const PostHeader = ({ title, purpose, groupType, season, isAuthor, postId }) => {
+    const navigate = useNavigate();
 
     // 삭제 버튼 클릭 핸들러
     const handleDelete = async () => {
         try {
-            await deletePostById(postId); // 포스트 삭제 API 호출
+            await deletePostById(postId); // 포스트 삭제 API 호출 (API 함수 필요)
             alert('포스트가 삭제되었습니다.');
             navigate('/'); // 삭제 후 메인 페이지로 이동
         } catch (error) {
