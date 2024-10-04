@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { getUser, followUser, unfollowUser } from "../../services/authService";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUserState } from "../../recoil/atom";
-import "react-toastify/dist/ReactToastify.css"; // toast 스타일 import
-
-toast.configure();
 
 const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
   const [followersFullNames, setFollowersFullNames] = useState([]);
