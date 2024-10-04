@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { useRecoilState } from "recoil";
 import { currentUserState, notificationListState } from "../../recoil/atom";
-import NotificationModal from "./NotificationModal";
+import NotificationModal from "../Notification/NotificationList";
 import { getNotifications, markAsRead } from "../../services/notificationService";
 import { useNavigate } from "react-router-dom";
 

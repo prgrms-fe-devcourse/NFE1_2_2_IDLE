@@ -3,7 +3,7 @@ import {
   getNotifications,
   markAsRead,
   deleteNotifications,
-} from "../../services/notificationApi";
+} from "../../services/notificationService"
 import { formatTimeAgo } from "../../utils/formatDate";
 import { useNavigate } from "react-router-dom";
 
