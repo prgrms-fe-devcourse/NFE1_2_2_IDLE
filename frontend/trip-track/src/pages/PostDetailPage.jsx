@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getPostById } from "../api"; // API 호출 함수 임포트
+import { getPostById } from "../../../../backend/api.js"; // API 호출 함수 임포트
 import PostContent from "../components/Post/PostContent";
 import PostHeader from "../components/Post/PostHeader";
 

@@ -3,6 +3,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/splide.min.css';
 import './PostContent.css';
 
+
 // PostContent 컴포넌트
 const PostContent = ({ dailyLocations }) => {
     // 상태로 현재 선택된 날짜와 장소 추적
@@ -29,11 +30,11 @@ const PostContent = ({ dailyLocations }) => {
     return (
         <div className="post-content">
             {/* 날짜 제목 */}
-            <h2>{`방문 날짜: ${currentDay.date}`}</h2>
+            <h3>{`방문 날짜: ${currentDay.date}`}</h3>
 
             {/* 장소명 + 장소별 제목 */}
-            <h2>{name}</h2>
-            <h3>{title}</h3>
+            <p>📍 {name}</p>
+            <h4>{title}</h4>
 
             {/* 사진 슬라이드 */}
             {photos.length > 0 && (
