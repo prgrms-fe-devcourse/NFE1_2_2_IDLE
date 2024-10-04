@@ -60,7 +60,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
     try {
       // 팔로우 요청
       const newFollow = await followUser(userId);
-      setFollowingFullNames((prev) => [...prev, { userId }]);
+      setFollowingFullNames((prev) => [...prev, { _id: newFollow._id, userId }]);
 
       // currentUser 상태 업데이트
       setCurrentUser((prevUser) => ({
@@ -186,6 +186,8 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
                     followers={filteredFollowers}
                     handleUserClick={handleUserClick}
                     handleFollow={handleFollow}
+                    handleUnfollow={handleUnfollow} // 언팔로우 핸들러 추가
+                    currentUser={currentUser} // 로그인한 사용자 정보 전달
                     isFollowingUser={isFollowingUser} // 로그인한 사용자가 팔로우 중인지 확인
                   />
                 )}
@@ -195,7 +197,9 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
                   <FollowingList
                     following={filteredFollowing}
                     handleUserClick={handleUserClick}
-                    handleUnfollow={handleUnfollow}
+                    handleFollow={handleFollow}
+                    handleUnfollow={handleUnfollow} // 언팔로우 핸들러 추가
+                    currentUser={currentUser} // 로그인한 사용자 정보 전달
                     isFollowingUser={isFollowingUser} // 로그인한 사용자가 팔로우 중인지 확인
                   />
                 )}
@@ -209,7 +213,7 @@ const FollowListModal = ({ followers, following, activeTab, setActiveTab }) => {
 };
 
 // 팔로워 리스트 컴포넌트
-const FollowerList = ({ followers, handleUserClick, handleFollow, isFollowingUser }) => (
+const FollowerList = ({ followers, handleUserClick, handleFollow, handleUnfollow, currentUser, isFollowingUser }) => (
   <ul>
     {followers.map((user) => (
       <li
@@ -231,34 +235,37 @@ const FollowerList = ({ followers, handleUserClick, handleFollow, isFollowingUse
           style={{ width: 40, height: 40, borderRadius: "50%", marginRight: 10 }}
         />
         {user.fullName}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (isFollowingUser(user.userId)) {
-              // 이미 팔로우 중이라면 언팔로우 버튼 표시
-              handleUnfollow(user._id, user.userId);
-            } else {
-              handleFollow(user.userId); // 팔로우 실행
-            }
-          }}
-          style={{
-            marginLeft: "auto",
-            backgroundColor: isFollowingUser(user.userId) ? "#002050" : "#0066ff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            padding: "5px 10px",
-          }}
-        >
-          {isFollowingUser(user.userId) ? "Unfollow" : "Follow"}
-        </button>
+
+        {/* 로그인한 사용자인 경우 버튼 숨김 */}
+        {currentUser._id !== user.userId && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (isFollowingUser(user.userId)) {
+                handleUnfollow(user._id, user.userId); // 언팔로우 실행
+              } else {
+                handleFollow(user.userId); // 팔로우 실행
+              }
+            }}
+            style={{
+              marginLeft: "auto",
+              backgroundColor: isFollowingUser(user.userId) ? "#002050" : "#0066ff",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              padding: "5px 10px",
+            }}
+          >
+            {isFollowingUser(user.userId) ? "Unfollow" : "Follow"}
+          </button>
+        )}
       </li>
     ))}
   </ul>
 );
 
 // 팔로잉 리스트 컴포넌트
-const FollowingList = ({ following, handleUserClick, handleUnfollow, isFollowingUser }) => (
+const FollowingList = ({ following, handleUserClick, handleFollow, handleUnfollow, currentUser, isFollowingUser }) => (
   <ul>
     {following.map((user) => (
       <li
@@ -280,26 +287,30 @@ const FollowingList = ({ following, handleUserClick, handleUnfollow, isFollowing
           style={{ width: 40, height: 40, borderRadius: "50%", marginRight: 10 }}
         />
         {user.fullName}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (isFollowingUser(user.userId)) {
-              handleUnfollow(user._id, user.userId); // 언팔로우 실행
-            } else {
-              handleFollow(user.userId); // 팔로우 실행
-            }
-          }}
-          style={{
-            marginLeft: "auto",
-            backgroundColor: isFollowingUser(user.userId) ? "#002050" : "#0066ff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            padding: "5px 10px",
-          }}
-        >
-          {isFollowingUser(user.userId) ? "Unfollow" : "Follow"}
-        </button>
+
+        {/* 로그인한 사용자인 경우 버튼 숨김 */}
+        {currentUser._id !== user.userId && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (isFollowingUser(user.userId)) {
+                handleUnfollow(user._id, user.userId); // 언팔로우 실행
+              } else {
+                handleFollow(user.userId); // 팔로우 실행
+              }
+            }}
+            style={{
+              marginLeft: "auto",
+              backgroundColor: isFollowingUser(user.userId) ? "#002050" : "#0066ff",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              padding: "5px 10px",
+            }}
+          >
+            {isFollowingUser(user.userId) ? "Unfollow" : "Follow"}
+          </button>
+        )}
       </li>
     ))}
   </ul>
