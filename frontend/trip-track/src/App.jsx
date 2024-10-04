@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React from "react";
+import { RecoilRoot } from "recoil";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import MainLayout from './Layouts/MainLayout'
+import Home from './pages/Home';
+import SignIn from "./Auth/SignIn";
+import NotFoundPage from './components/Common/NotFoundPage';
+import UserProfilePage from "./pages/UserProfilePage";
+import PrivateRoute from "./components/Auth/PrivateRoute";
+import LoadUserFromLocalStorage from "./components/Auth/LoadUserFromLocalStorage"; // 로그인 상태를 유지하는 컴포넌트
+
+const queryClient = new QueryClient();
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <RecoilRoot>
+      <LoadUserFromLocalStorage /> {/* 로그인 상태 복원 */}
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <MainLayout>
+            <Routes>
+              <Route path="/" element={<Home/>} />
+              <Route
+                path="/user/:userId"
+                element={
+                  <PrivateRoute>
+                    <UserProfilePage />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/register" element={<div>SignUp Page로 이동</div>} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </MainLayout>
+        </Router>
+      </QueryClientProvider>
+    </RecoilRoot>
+  );
 }
 
-export default App
+export default App;
+
