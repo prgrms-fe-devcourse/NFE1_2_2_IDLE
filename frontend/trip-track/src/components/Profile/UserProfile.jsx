@@ -8,6 +8,7 @@ const UserProfile = ({
   onFollow, // 팔로우/언팔로우 함수
   isFollowing,
   isLoggedIn,
+  setModalActiveTab, // setModalActiveTab prop 추가
 }) => {
   return (
     <div
@@ -64,18 +65,29 @@ const UserProfile = ({
 
           <div className="mt-2 d-flex align-items-center">
             <span className="me-4">{userData.posts?.length || 0} posts</span>
-            <button
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#followListModal"
-              className="btn text-reset"
-              style={{ outline: "none", boxShadow: "none" }}
-            >
-              <span>{userData.followers?.length || 0} followers</span>
-              <span className="ms-3">
-                {userData.following?.length || 0} followings
-              </span>
-            </button>
+                        {/* 팔로워 수와 팔로잉 수를 별도의 버튼으로 분리 */}
+                        <div className="d-flex">
+              <button
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#followListModal"
+                className="btn btn-link text-reset me-4 p-0"
+                style={{ border: "none", outline: "none", textDecoration: "none" }}
+                onClick={() => setModalActiveTab("followers")}
+              >
+                <span>{userData.followers?.length || 0} followers</span>
+              </button>
+              <button
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#followListModal"
+                className="btn btn-link text-reset p-0"
+                style={{ border: "none", outline: "none", textDecoration: "none" }}
+                onClick={() => setModalActiveTab("following")}
+              >
+                <span>{userData.following?.length || 0} followings</span>
+              </button>
+            </div>
           </div>
 
           <div

@@ -17,6 +17,7 @@ const UserProfilePage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState("My Posts");
   const [searchQuery, setSearchQuery] = useState("");
+  const [modalActiveTab, setModalActiveTab] = useState("followers"); // 모달 탭용
 
   const fetchUserData = async () => {
     try {
@@ -110,6 +111,7 @@ const UserProfilePage = () => {
             onFollow={handleFollow}
             isFollowing={isFollowing}
             isLoggedIn={!!currentUser}
+            setModalActiveTab={setModalActiveTab} // setModalActiveTab 전달
           />
           <PostHeader
             isCurrentUser={currentUser ? currentUser._id === userId : false}
@@ -127,7 +129,7 @@ const UserProfilePage = () => {
             followers={userData.followers}
             following={userData.following}
             activeTab={activeTab}
-            setActiveTab={setActiveTab}
+            modalActiveTab={modalActiveTab} // 모달 탭 상태 전달
           />
         </div>
       )}
