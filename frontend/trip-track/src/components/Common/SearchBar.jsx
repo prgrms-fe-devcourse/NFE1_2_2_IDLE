@@ -1,103 +1,47 @@
-import React, { useState } from 'react';
 import './SearchBar.css';
+import { useState } from 'react';
 
-const SearchBar = ({ onSearch, onFilter, onTabChange }) => {
-    const [query, setQuery] = useState('');
-    const [activeTab, setActiveTab] = useState('Following');
-    const [selectedOption, setSelectedOption] = useState('이번 주');
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    const handleInputChange = (e) => {
-        setQuery(e.target.value);
-    };
+const SearchBar = ({ setFilter }) => {
+    const [searchText, setSearchText] = useState('');
+    const isLoggedIn = !!localStorage.getItem('token');
+    const [selectedTab, setSelectedTab] = useState('trending'); // 기본값은 트렌딩
+    const [dropDownValue, setDropDownValue] = useState('this-week'); // 기본 드롭다운 값
 
     const handleSearch = () => {
-        if (onSearch) {
-            onSearch(query);
-        }
-    };
-
-    const handleFilterClick = () => {
-        if (onFilter) {
-            onFilter();
-        }
-    };
-
-    const handleTabClick = (tabName) => {
-        setActiveTab(tabName);
-        if (onTabChange) {
-            onTabChange(tabName);
-        }
-    };
-
-    const handleOptionClick = (option) => {
-        setSelectedOption(option);
-        setIsDropdownOpen(false);
+        // 검색 처리 로직 (다른 팀원이 구현한 부분으로 이동)
+        console.log('Search:', searchText);
     };
 
     return (
-        <div className="search-bar-container">
-            {/* 왼쪽: 검색창과 조건 설정 버튼 */}
-            <div className="search-bar-wrap">
+        <div className="search-bar">
+            <input
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                placeholder="Search posts..."
+            />
+            <button onClick={handleSearch}>🔍</button>
 
-                <div className="search-input">
-                    <div className="search-bar">
-                        <input
-                            type="text"
-                            value={query}
-                            onChange={handleInputChange}
-                            placeholder="포스트 또는 @사용자 검색"
-                            className="search-input"
-                        />
-                        <button onClick={handleSearch} className="search-btn">
-                            🔍
-                        </button>
-                    </div>
-                </div>
+            {/* 조건 설정 버튼 (다른 팀원이 구현할 모달) */}
+            <button>Condition Settings</button>
 
-                <button onClick={handleFilterClick} className="filter-btn">
-                    조건 설정
-                </button>
-            </div>
+            <div className="tabs">
+                <button onClick={() => setFilter('trending')}>Trending</button>
+                <button onClick={() => setFilter('new')}>New</button>
+                {isLoggedIn && <button onClick={() => setFilter('following')}>Following</button>}
 
-
-            {/* 오른쪽: 드롭다운 + 탭 버튼들 */}
-            <div className="tab-container">
-                {/* 드롭다운 (New 탭에서만 활성화) */}
-                {activeTab === 'New' && (
-                    <div className="dropdown">
-                        <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="dropdown-button">
-                            {selectedOption} 🔽
-                        </button>
-                        {isDropdownOpen && (
-                            <ul className="dropdown-menu">
-                                <li onClick={() => handleOptionClick('이번 주')}>이번 주</li>
-                                <li onClick={() => handleOptionClick('이번 분기')}>이번 분기</li>
-                                <li onClick={() => handleOptionClick('올해')}>올해</li>
-                            </ul>
-                        )}
-                    </div>
+                {/* 드롭다운 메뉴 (트렌딩 탭에서만 활성화) */}
+                {selectedTab === 'trending' && (
+                    <select
+                        value={dropDownValue}
+                        onChange={(e) => setDropDownValue(e.target.value)}
+                    >
+                        <option value="this-week">This Week</option>
+                        <option value="this-quarter">This Quarter</option>
+                        <option value="this-year">This Year</option>
+                    </select>
                 )}
-
-                {/* 탭 버튼 */}
-                <button
-                    className={`tab-button ${activeTab === 'New' ? 'active' : ''}`}
-                    onClick={() => handleTabClick('New')}
-                >
-                    New
-                </button>
-                <button
-                    className={`tab-button ${activeTab === 'Trending' ? 'active' : ''}`}
-                    onClick={() => handleTabClick('Trending')}
-                >
-                    Trending
-                </button>
-                <button
-                    className={`tab-button ${activeTab === 'Following' ? 'active' : ''}`}
-                    onClick={() => handleTabClick('Following')}
-                >
-                    Following
-                </button>
             </div>
         </div>
     );

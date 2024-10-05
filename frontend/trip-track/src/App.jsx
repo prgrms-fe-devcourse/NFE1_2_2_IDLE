@@ -1,12 +1,15 @@
-import MainPage from "./pages/MainPage";
+import './App.css'
+import { Routes, Route } from 'react-router-dom';
+import MainPage from './pages/MainPage.jsx';
 
-
-function App() {
+const App = () => {
   return (
-    <>
-      <MainPage />
-    </>
+    <div>
+      <Routes>
+        <Route path="/post/:postId" element={<MainPage />} />
+      </Routes>
+    </div>
   );
-}
+};
 
 export default App;
