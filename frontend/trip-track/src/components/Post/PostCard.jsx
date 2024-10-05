@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅 추가
 import './PostCard.css';
 import { formatDateRelative } from '../../utils/formatDate';
-import { getUserDetail } from '../../services/userService'; // 사용자 정보를 가져오는 API 요청 함수
+import { getUserDetail } from '../../services/postService'; // 사용자 정보를 가져오는 API 요청 함수
 
 const PostCard = ({ post }) => {
   const navigate = useNavigate();

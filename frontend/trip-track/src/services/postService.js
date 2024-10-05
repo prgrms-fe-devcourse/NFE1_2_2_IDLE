@@ -54,6 +54,17 @@ export const getUsers = async () => {
   }
 };
 
+export const getUserDetail = async (userId) => {
+  try {
+    // 사용자 ID를 기반으로 API 호출을 통해 사용자 정보를 가져옴
+    const response = await api.get(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Failed to fetch user details for ID: ${userId}`, error.message);
+    throw error;
+  }
+};
+
 // 특정 포스트 상세 조회
 export const getPostDetail = async (postId) => {
   try {
