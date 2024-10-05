@@ -1,89 +1,163 @@
-import { useState } from 'react';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/splide/dist/css/splide.min.css';
 import './PostContent.css';
+import { useState, useEffect } from 'react';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
+import axios from 'axios';
 
+const PostContent = ({ location, postId }) => {
+    const [likes, setLikes] = useState(location.likes || 0);
+    const [hasLiked, setHasLiked] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [showComments, setShowComments] = useState(false);
+    const token = localStorage.getItem('token'); // 토큰 가져오기
 
-// PostContent 컴포넌트
-const PostContent = ({ dailyLocations }) => {
-    // 상태로 현재 선택된 날짜와 장소 추적
-    const [currentDayIndex, setCurrentDayIndex] = useState(0); // 현재 날짜 인덱스
-    const [currentLocationIndex, setCurrentLocationIndex] = useState(0); // 현재 장소 인덱스
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                const response = await axios.get(
+                    `https://kdt.frontend.5th.programmers.co.kr:5008/comments/${postId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setComments(response.data);
+            } catch (error) {
+                console.error('Failed to fetch comments', error);
+            }
+        };
+        fetchComments();
+    }, [postId, token]);
 
-    // 현재 날짜의 장소 목록 가져오기
-    const currentDay = dailyLocations[currentDayIndex];
-    const currentLocations = currentDay.locations;
-
-    const handleLocationPageClick = (index) => {
-        setCurrentLocationIndex(index);
+    const handleLike = async () => {
+        try {
+            if (!hasLiked) {
+                await axios.post(
+                    `https://kdt.frontend.5th.programmers.co.kr:5008/likes/create`,
+                    { postId },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setLikes(likes + 1);
+            } else {
+                await axios.delete(
+                    `https://kdt.frontend.5th.programmers.co.kr:5008/likes/delete`,
+                    {
+                        data: { postId },
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setLikes(likes - 1);
+            }
+            setHasLiked(!hasLiked);
+        } catch (error) {
+            console.error('Failed to toggle like', error);
+        }
     };
 
-    const handleDayChange = (direction) => {
-        setCurrentDayIndex((prevDayIndex) => prevDayIndex + direction);
-        setCurrentLocationIndex(0); // 날짜가 변경되면 첫 번째 장소로 리셋
+    const handleCommentSubmit = async (e) => {
+        e.preventDefault();
+        if (newComment.trim().length > 300) {
+            alert('Comment must be 300 characters or less');
+            return;
+        }
+        try {
+            const response = await axios.post(
+                `https://kdt.frontend.5th.programmers.co.kr:5008/comments/create`,
+                {
+                    comment: newComment,
+                    postId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setComments([...comments, response.data]);
+            setNewComment('');
+        } catch (error) {
+            console.error('Failed to post comment', error);
+        }
     };
 
-    const currentLocation = currentLocations[currentLocationIndex];
-
-    const { name = '', title = '', photos = [], description = '' } = currentLocation;
+    const handleDeleteComment = async (commentId) => {
+        try {
+            await axios.delete(
+                `https://kdt.frontend.5th.programmers.co.kr:5008/comments/delete`,
+                {
+                    data: { id: commentId },
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setComments(comments.filter((comment) => comment._id !== commentId));
+        } catch (error) {
+            console.error('Failed to delete comment', error);
+        }
+    };
 
     return (
         <div className="post-content">
-            {/* 날짜 제목 */}
-            <h3>{`방문 날짜: ${currentDay.date}`}</h3>
-
-            {/* 장소명 + 장소별 제목 */}
-            <p>📍 {name}</p>
-            <h4>{title}</h4>
-
-            {/* 사진 슬라이드 */}
-            {photos.length > 0 && (
-                <Splide options={{ type: 'loop', perPage: 1, autoplay: true, pagination: false }}>
-                    {photos.map((photo, index) => (
-                        <SplideSlide key={index}>
-                            <img src={photo} alt={`slide-${index}`} />
+            <div className="content-header">
+                <h2>{location.name}</h2>
+                <h3>{location.description}</h3>
+            </div>
+            {location.photos.length > 0 ? (
+                <Splide>
+                    {location.photos.map((photo) => (
+                        <SplideSlide key={photo._id}>
+                            <img src={photo.url} alt={location.name} />
                         </SplideSlide>
                     ))}
                 </Splide>
+            ) : (
+                <div className="content-desc">
+                    <p>{location.description}</p>
+                </div>
             )}
-
-            {/* 텍스트 내용 */}
-            <p>{description.slice(0, photos.length > 0 ? 500 : 1000)}</p>
-
-            {/* 날짜 변경 버튼 */}
-            <div className="day-navigation">
-                <button onClick={() => handleDayChange(-1)} disabled={currentDayIndex === 0}>
-                    {'<<'}
+            <div className="content-community">
+                <button onClick={handleLike}>
+                    {hasLiked ? '❤️' : '♡'} {likes}
                 </button>
-                <button onClick={() => handleDayChange(1)} disabled={currentDayIndex === dailyLocations.length - 1}>
-                    {'>>'}
+                <button onClick={() => setShowComments(!showComments)}>
+                    💬 {comments.length}
                 </button>
             </div>
 
-            {/* 페이지네이션: 하루에 방문한 장소들만 표시 */}
-            <div className="pagination">
-                <button
-                    onClick={() => handleLocationPageClick(currentLocationIndex - 1)}
-                    disabled={currentLocationIndex === 0}
-                >
-                    {'<'}
-                </button>
-                {currentLocations.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => handleLocationPageClick(index)}
-                        className={index === currentLocationIndex ? 'active' : ''}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-                <button
-                    onClick={() => handleLocationPageClick(currentLocationIndex + 1)}
-                    disabled={currentLocationIndex === currentLocations.length - 1}
-                >
-                    {'>'}
-                </button>
-            </div>
+            {showComments && (
+                <div className="comments-section">
+                    {comments.map((comment) => (
+                        <div key={comment._id} className="comment">
+                            <img src={comment.author.profileImage} alt={comment.author.fullName} />
+                            <div>
+                                <p>{comment.author.fullName}</p>
+                                <p>{comment.comment}</p>
+                            </div>
+                            {localStorage.getItem('userId') === comment.author._id && (
+                                <button onClick={() => handleDeleteComment(comment._id)}>🗑️</button>
+                            )}
+                        </div>
+                    ))}
+                    <form onSubmit={handleCommentSubmit}>
+                        <textarea
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Write a comment..."
+                            maxLength={300}
+                        />
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };

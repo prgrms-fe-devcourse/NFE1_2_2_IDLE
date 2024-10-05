@@ -1,54 +1,48 @@
-import { deletePostById } from '../../../../../backend/api'; // API 함수 가져오기
-import './PostHeader.css'; // 스타일 파일 임포트
-import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate
+import './PostHeader.css'
+import { useNavigate } from 'react-router-dom'; 
+import axios from 'axios';
 
-const PostHeader = ({ title, purpose, groupType, season, isAuthor, postId }) => {
-    const navigate = useNavigate();
+const PostHeader = ({ post }) => {
+    const navigate = useNavigate(); // useHistory 대신 useNavigate 사용
+    const isAuthor = localStorage.getItem('userId') === post.author._id;
 
-    // 삭제 버튼 클릭 핸들러
+    const handleEdit = () => {
+        navigate(`/edit-post/${post._id}`); // useNavigate로 페이지 이동
+    };
+
     const handleDelete = async () => {
-        try {
-            await deletePostById(postId); // 포스트 삭제 API 호출 (API 함수 필요)
-            alert('포스트가 삭제되었습니다.');
-            navigate('/'); // 삭제 후 메인 페이지로 이동
-        } catch (error) {
-            console.error('Error deleting post:', error);
+        if (window.confirm('Are you sure you want to delete this post?')) {
+            try {
+                const token = localStorage.getItem('token');
+                await axios.delete(`/posts/delete`, {
+                    data: { id: post._id },
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                navigate('/'); // 삭제 후 메인 페이지로 이동
+            } catch (error) {
+                console.error('Failed to delete post', error);
+            }
         }
     };
 
-    // 수정 버튼 클릭 핸들러
-    const handleEdit = () => {
-        navigate(`/posts/edit/${postId}`); // 수정 페이지로 이동
-    };
-
-    // 공유 버튼 클릭 핸들러
     const handleShare = () => {
-        alert(`포스트 링크가 복사되었습니다: ${window.location.href}`);
+        navigator.clipboard.writeText(window.location.href);
+        alert('Link copied to clipboard');
     };
 
     return (
         <div className="post-header">
-            {/* 좌측: 포스트 제목과 여행 목적, 인원, 계절 라벨 */}
-            <div className="post-header-left">
-                <h1 className="post-title">{title}</h1>
-                <div className="post-labels">
-                    <span className="post-label">{purpose}</span>
-                    <span className="post-label">{groupType}</span>
-                    <span className="post-label">{season}</span>
+            <h1>{post.title}</h1>
+            {isAuthor ? (
+                <div className="author-controls">
+                    <button onClick={handleEdit}>Edit</button>
+                    <button onClick={handleDelete}>Delete</button>
                 </div>
-            </div>
-
-            {/* 우측: 포스트 관리 버튼 */}
-            <div className="post-header-right">
-                {isAuthor ? (
-                    <div className="author-buttons">
-                        <button className="post-button delete" onClick={handleDelete}>삭제</button>
-                        <button className="post-button edit" onClick={handleEdit}>수정</button>
-                    </div>
-                ) : (
-                    <button className="post-button share" onClick={handleShare}>공유</button>
-                )}
-            </div>
+            ) : (
+                <button onClick={handleShare}>Share</button>
+            )}
         </div>
     );
 };

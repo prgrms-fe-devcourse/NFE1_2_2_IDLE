@@ -1,15 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PostDetailPage from "./pages/PostDetailPage";
+import './App.css'
+import { Routes, Route } from 'react-router-dom';
+import PostDetailPage from './pages/PostDetailPage.jsx';
+// import EditPostPage from './EditPostPage';
 
-function App() {
+const App = () => {
   return (
-    <Router>
+    <div>
       <Routes>
-        {/* 기본 경로로 PostDetailPage를 렌더링 */}
-        <Route path="/" element={<PostDetailPage />} />
+        <Route path="/post/:postId" element={<PostDetailPage />} />
+        {/* <Route path="/edit-post/:postId" element={<EditPostPage />} /> */}
       </Routes>
-    </Router>
+    </div>
   );
-}
+};
 
 export default App;

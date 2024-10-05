@@ -1,64 +1,59 @@
 .post-header {
+    padding: 0.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-
-}
-
-.post-header-left {
-    display: flex;
-    flex-direction: column;
+    background-color: aquamarine;
 }
 
 .post-title {
-    font-size: 1.5rem; /* 제목 폰트 크기 */
-    color: #002050;
-    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    padding: 0;
 }
 
-.post-labels {
+.post-labels,
+.author-buttons {
     display: flex;
-    gap: 0.5rem;
+    gap: 0 0.5rem;
 }
 
 .post-label {
-    background-color: #f0f4ff; /* 라벨 배경색 */
-    color: #002050;
-    padding: 0.25rem 0.5rem;
+    border: 1px solid #002050;
     border-radius: 0.5rem;
-    font-size: 0.875rem;
-}
-
-.post-header-right {
-    display: flex;
-    align-items: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    text-align: center;
 }
 
 .post-button {
-    background-color: transparent;
+    width: 5rem;
+    height: 3rem;
+    padding: 1rem;
+    background: none;
+}
+
+.post-button.edit,
+.post-button.share {
     border: 1px solid #0066ff;
-    color: #0066ff;
-    padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
+    color: #0066ff;
+}
+
+.post-button.edit:hover,
+.post-button.share:hover {
+    background-color: #0066ff;
+    color: #fff;
 }
 
 .post-button.delete {
-    color: #ec221f;
     border: 1px solid #ec221f;
-}
-
-.post-button.edit {
-    margin-left: 0.5rem;
-}
-
-.post-button:hover {
-    background-color: #0066ff;
-    color: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: #ec221f;
 }
 
 .post-button.delete:hover {
     background-color: #ec221f;
-    color: white;
+    color: #fff;
 }
