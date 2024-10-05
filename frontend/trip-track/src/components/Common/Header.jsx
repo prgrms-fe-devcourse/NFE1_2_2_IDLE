@@ -3,7 +3,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { useRecoilState } from "recoil";
 import { currentUserState, notificationListState } from "../../recoil/atom";
 import NotificationModal from "../Notification/NotificationList";
-import { getNotifications, markNotificationsAsSeen } from "../../services/notificationService";
+import { getNotifications } from "../../services/notificationService";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -48,42 +48,34 @@ const Header = () => {
     }
   }, [setCurrentUser]);
 
-  // 알림 목록을 가져오는 useEffect
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      if (currentUser) {
-        try {
-          const token = localStorage.getItem("token");
-          const notificationData = await getNotifications(token);
-          setNotifications(notificationData);
-          const unread = notificationData.filter((n) => !n.seen).length;
-          setUnreadCount(unread);
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-        }
+ // 알림 목록을 가져오는 useEffect
+ useEffect(() => {
+  const fetchNotifications = async () => {
+    if (currentUser) {
+      try {
+        const notificationData = await getNotifications();
+        setNotifications(notificationData);
+        const unread = notificationData.filter((n) => !n.seen).length;
+        setUnreadCount(unread);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
       }
-    };
-
-    fetchNotifications();
-
-    // 30초마다 알림을 폴링하는 방식으로 구현
-    const intervalId = setInterval(() => {
-      fetchNotifications();
-    }, 30000); // 30초마다 요청
-
-    return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 인터벌 제거
-  }, [currentUser, setNotifications]);
-
-  const handleNotificationClick = () => {
-    setShowModal(true);
-    notifications.forEach((notification) => {
-      if (!notification.seen) {
-        const token = localStorage.getItem("token");
-        markNotificationsAsSeen(notification._id, token);
-      }
-    });
-    setUnreadCount(0);
+    }
   };
+
+  fetchNotifications();
+
+  const intervalId = setInterval(() => {
+    fetchNotifications();
+  }, 30000); // 30초마다 요청
+
+  return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 인터벌 제거
+}, [currentUser, setNotifications]);
+
+const handleNotificationClick = () => {
+  setShowModal(true);
+  setUnreadCount(0); // 알림 클릭 시 미읽음 카운트 초기화
+};
 
   const headerHeight = (80 / window.innerHeight) * 100;
   const buttonStyle = {

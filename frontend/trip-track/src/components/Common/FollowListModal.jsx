@@ -5,7 +5,7 @@ import { sendNotification } from "../../services/notificationService";  // ì•Œë¦
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUserState } from "../../recoil/atom";
 
-const FollowListModal = ({ followers, following, modalActiveTab, setUserData }) => {
+const FollowListModal = ({ followers, following, modalActiveTab }) => {
   const [followersFullNames, setFollowersFullNames] = useState([]);
   const [followingFullNames, setFollowingFullNames] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");

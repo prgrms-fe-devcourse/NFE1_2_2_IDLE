@@ -1,6 +1,4 @@
-// src/services/notificationService.js
-
-import axiosInstance from "./axiosInstance"  // axios 인스턴스 사용
+import axiosInstance from "./axiosInstance";  // axios 인스턴스 사용
 
 // 알림 생성 함수
 export const sendNotification = async (notificationData) => {
@@ -13,7 +11,7 @@ export const sendNotification = async (notificationData) => {
   }
 };
 
-// 나의 알림 목록 불러오기
+// 알림 목록 불러오기
 export const getNotifications = async () => {
   try {
     const response = await axiosInstance.get("/notifications");
@@ -25,12 +23,12 @@ export const getNotifications = async () => {
 };
 
 // 알림 읽음 처리
-export const markNotificationsAsSeen = async () => {
+export const markNotificationAsSeen = async (notificationId) => {
   try {
-    const response = await axiosInstance.put("/notifications/seen");
+    const response = await axiosInstance.put("/notifications/seen", { id: notificationId });
     return response.data;
   } catch (error) {
-    console.error("Failed to mark notifications as seen:", error);
+    console.error("Failed to mark notification as seen:", error);
     throw error;
   }
 };

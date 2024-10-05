@@ -1,64 +1,36 @@
 import React, { useEffect, useState } from "react";
-import {
-  sendNotification,
-  getNotifications,
-  markNotificationsAsSeen,
-} from "../../services/notificationService"
+import { getNotifications, markNotificationAsSeen } from "../../services/notificationService";
 import { formatTimeAgo } from "../../utils/formatDate";
 import { useNavigate } from "react-router-dom";
 
 const NotificationList = ({ setShowModal }) => {
   const [notifications, setNotifications] = useState([]);
-  const [selectedNotifications, setSelectedNotifications] = useState([]); // 선택된 알림을 저장
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      const token = localStorage.getItem("token");
-      const data = await getNotifications(token);
+      const data = await getNotifications();
       setNotifications(data);
     };
     fetchNotifications();
   }, []);
 
   const handleNotificationClick = async (notification) => {
-    const token = localStorage.getItem("token");
+    // 읽음 처리
     if (!notification.seen) {
-      await markAsRead(notification._id, token); // 읽음 처리
+      await markNotificationAsSeen(notification._id);  // 알림 읽음 처리
       setNotifications((prev) =>
         prev.map((n) => (n._id === notification._id ? { ...n, seen: true } : n))
       );
     }
+
+    // 팔로우 알림이면 A 사용자 프로필로 이동
     if (notification.notificationType === "FOLLOW") {
-      navigate(`/users/${notification.follow}`);
-    } else if (
-      notification.notificationType === "COMMENT" ||
-      notification.notificationType === "LIKE"
-    ) {
-      navigate(`/posts/${notification.post}`);
+      navigate(`/users/${notification.author._id}`);
     }
+
+    // 모달 닫기
     setShowModal(false);
-  };
-
-  const handleCheckboxChange = (notificationId) => {
-    if (selectedNotifications.includes(notificationId)) {
-      setSelectedNotifications((prev) =>
-        prev.filter((id) => id !== notificationId)
-      );
-    } else {
-      setSelectedNotifications((prev) => [...prev, notificationId]);
-    }
-  };
-
-  const handleDeleteSelected = async () => {
-    const token = localStorage.getItem("token");
-    await deleteNotifications(selectedNotifications, token); // 선택된 알림 삭제
-    setNotifications((prev) =>
-      prev.filter(
-        (notification) => !selectedNotifications.includes(notification._id)
-      )
-    );
-    setSelectedNotifications([]); // 선택 초기화
   };
 
   return (
@@ -88,34 +60,22 @@ const NotificationList = ({ setShowModal }) => {
                   }}
                   onClick={() => handleNotificationClick(notification)}
                 >
-                  {/* 체크박스 추가 */}
-                  <input
-                    type="checkbox"
-                    checked={selectedNotifications.includes(notification._id)}
-                    onChange={() => handleCheckboxChange(notification._id)}
+                  <img
+                    src={notification.author.image || "/defaultProfile.png"}
+                    alt={notification.author.fullName}
+                    style={{ width: 40, height: 40, borderRadius: "50%", marginRight: 10 }}
                   />
-                  {notification.notificationType === "FOLLOW" &&
-                    `${notification.author.fullName}님이 팔로우했습니다.`}
-                  {notification.notificationType === "LIKE" &&
-                    `${notification.author.fullName}님이 ${notification.postTitle}에 좋아요를 눌렀습니다.`}
-                  {notification.notificationType === "COMMENT" &&
-                    `${notification.author.fullName}님이 ${notification.postTitle}에 댓글을 달았습니다.`}
+                  {notification.notificationType === "FOLLOW" && (
+                    <span>
+                      {notification.author.fullName}님이 팔로우했습니다.
+                    </span>
+                  )}
                   <span style={{ float: "right" }}>
                     {formatTimeAgo(notification.createdAt)}
                   </span>
                 </div>
               ))
             )}
-          </div>
-          <div className="modal-footer">
-            {/* 선택된 알림 삭제 버튼 */}
-            <button
-              className="btn btn-danger"
-              onClick={handleDeleteSelected}
-              disabled={selectedNotifications.length === 0}
-            >
-              선택된 알림 삭제
-            </button>
           </div>
         </div>
       </div>
