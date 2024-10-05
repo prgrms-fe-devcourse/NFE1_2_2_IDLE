@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const NotificationList = ({ setShowModal }) => {
   const [notifications, setNotifications] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,6 +17,8 @@ const NotificationList = ({ setShowModal }) => {
   }, []);
 
   const handleNotificationClick = async (notification) => {
+    console.log(notification)
+
     // 읽음 처리
     if (!notification.seen) {
       await markNotificationAsSeen(notification._id);  // 알림 읽음 처리
@@ -23,12 +26,12 @@ const NotificationList = ({ setShowModal }) => {
         prev.map((n) => (n._id === notification._id ? { ...n, seen: true } : n))
       );
     }
-
-    // 팔로우 알림이면 A 사용자 프로필로 이동
-    if (notification.notificationType === "FOLLOW") {
+  
+    // 알림의 유형에 따라 프로필로 이동
+    if (notification.follow) {
       navigate(`/users/${notification.author._id}`);
     }
-
+  
     // 모달 닫기
     setShowModal(false);
   };
@@ -55,10 +58,12 @@ const NotificationList = ({ setShowModal }) => {
                   className="notification-item"
                   style={{
                     padding: "10px",
+                    marginBottom: "10px",
                     borderBottom: "1px solid #ddd",
                     cursor: "pointer",
+                    backgroundColor: notification.seen === "true" ? "rgba(0, 102, 255, 0.25)" : "white", // 읽음 여부에 따른 배경색
                   }}
-                  onClick={() => navigate(`/users/${notification.author._id}`)}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <img
                     src={notification.author.image || `${import.meta.env.BASE_URL}images/defaultProfile.png`}
