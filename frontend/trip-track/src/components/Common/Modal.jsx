@@ -9,9 +9,7 @@ const Modal = ({ onClose, children, className = '' }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className={`modal-content ${className}`} onClick={(e) => e.stopPropagation()}>
         {/* 모달 닫기 버튼 */}
-        <Button className="modal-close-button" onClick={onClose}>
-          &times;
-        </Button>
+        <Button className="modal-close-button" onClick={onClose} label="&times;" />
         {/* 모달의 내용이 children으로 전달됨 */}
         {children}
       </div>
@@ -20,9 +18,9 @@ const Modal = ({ onClose, children, className = '' }) => {
 };
 
 Modal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
 };
 
 export default Modal;

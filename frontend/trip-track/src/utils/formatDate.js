@@ -21,4 +21,3 @@ export const formatDateRelative = (dateString) => {
     if (months < 12) return `${months}개월 전`;
     return `${years}년 전`;
   };
-  

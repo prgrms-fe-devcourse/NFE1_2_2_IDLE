@@ -1,28 +1,4 @@
-import api, { setAuthToken } from '../utils/api';
-
-// 로그인
-export const login = async (email, password) => {
-  try {
-    const response = await api.post('/login', { email, password });
-    setAuthToken(response.data.token);  // 로그인 성공 시 JWT 토큰 설정
-    return response.data; // { user, token } 형태의 데이터 반환
-  } catch (error) {
-    console.error('Failed to log in:', error.message);
-    throw error;
-  }
-};
-
-// 회원가입
-export const signup = async (email, fullName, password) => {
-  try {
-    const response = await api.post('/signup', { email, fullName, password });
-    setAuthToken(response.data.token);  // 회원가입 성공 시 JWT 토큰 설정
-    return response.data; // { user, token } 형태의 데이터 반환
-  } catch (error) {
-    console.error('Failed to sign up:', error.message);
-    throw error;
-  }
-};
+import api from '../utils/api';
 
 // 전체 검색 요청 함수
 export const searchAll = async (query) => {

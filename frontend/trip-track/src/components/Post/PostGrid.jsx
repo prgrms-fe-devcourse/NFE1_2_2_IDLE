@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import PostCard from './PostCard';
 import './PostGrid.css'; // 스타일 정의 추가
