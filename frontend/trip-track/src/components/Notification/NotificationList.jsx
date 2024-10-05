@@ -58,18 +58,16 @@ const NotificationList = ({ setShowModal }) => {
                     borderBottom: "1px solid #ddd",
                     cursor: "pointer",
                   }}
-                  onClick={() => handleNotificationClick(notification)}
+                  onClick={() => navigate(`/users/${notification.author._id}`)}
                 >
                   <img
-                    src={notification.author.image || "/defaultProfile.png"}
+                    src={notification.author.image || `${import.meta.env.BASE_URL}images/defaultProfile.png`}
                     alt={notification.author.fullName}
                     style={{ width: 40, height: 40, borderRadius: "50%", marginRight: 10 }}
                   />
-                  {notification.notificationType === "FOLLOW" && (
                     <span>
                       {notification.author.fullName}님이 팔로우했습니다.
                     </span>
-                  )}
                   <span style={{ float: "right" }}>
                     {formatTimeAgo(notification.createdAt)}
                   </span>
