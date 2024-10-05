@@ -1,6 +1,6 @@
 // src/services/notificationService.js
 
-import axiosInstance from "./axionsInstance"  // axios 인스턴스 사용
+import axiosInstance from "./axiosInstance"  // axios 인스턴스 사용
 
 // 알림 생성 함수
 export const sendNotification = async (notificationData) => {

@@ -1,9 +1,11 @@
+// UserProfilePage.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUserState } from "../recoil/atom";
 import { getUser, followUser, unfollowUser } from "../services/authService";
-import UserInfo from "../components/Profile/UserProfile";
+import UserProfile from '../components/Profile/UserProfile';
 import PostHeader from "../components/Common/PostHeader";
 import PostList from "../components/Post/PostList";
 import FollowListModal from "../components/Common/FollowListModal";
@@ -104,7 +106,7 @@ const UserProfilePage = () => {
     <>
       {userData && (
         <div className="container mt-4">
-          <UserInfo
+          <UserProfile
             userData={userData}
             isCurrentUser={currentUser ? currentUser._id === userId : false}
             onEditProfile={() => navigate("/EditProfile")}
@@ -128,8 +130,8 @@ const UserProfilePage = () => {
           <FollowListModal
             followers={userData.followers}
             following={userData.following}
-            activeTab={activeTab}
             modalActiveTab={modalActiveTab} // 모달 탭 상태 전달
+            setUserData={setUserData} // setUserData 전달
           />
         </div>
       )}

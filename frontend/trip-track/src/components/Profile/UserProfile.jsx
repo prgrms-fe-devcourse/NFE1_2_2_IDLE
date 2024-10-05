@@ -65,8 +65,8 @@ const UserProfile = ({
 
           <div className="mt-2 d-flex align-items-center">
             <span className="me-4">{userData.posts?.length || 0} posts</span>
-                        {/* 팔로워 수와 팔로잉 수를 별도의 버튼으로 분리 */}
-                        <div className="d-flex">
+            {/* 팔로워 수와 팔로잉 수를 별도의 버튼으로 분리 */}
+            <div className="d-flex">
               <button
                 type="button"
                 data-bs-toggle="modal"

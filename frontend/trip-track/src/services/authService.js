@@ -1,4 +1,6 @@
-import axiosInstance from "./axionsInstance"; // axiosInstance로 변경
+// authService.js
+
+import axiosInstance from "./axiosInstance"; // axiosInstance로 변경
 
 export const getUsers = async () => {
   const response = await axiosInstance.get("/users/get-users");
@@ -26,8 +28,9 @@ export const followUser = async (userId) => {
 // 언팔로우 API
 export const unfollowUser = async (followId) => {
   try {
+    console.log("Sending unfollow request with followId:", followId); // 디버깅 로그 추가
     const response = await axiosInstance.delete("/follow/delete", {
-      data: { id: followId }, // DELETE 요청에 follow 객체의 _id 전달
+      data: { id: followId }, // API 명세에 맞게 'id'로 전달
     });
     return response.data;
   } catch (error) {
