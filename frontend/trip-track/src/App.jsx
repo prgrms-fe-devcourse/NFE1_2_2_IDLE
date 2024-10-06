@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import SearchResultsPage from './pages/SearchResultsPage';
 // import PostDetailPage from './pages/PostDetailPage'; // 상세 페이지 컴포넌트 추가
+import SearchUserResultsPage from './pages/SearchUserResultsPage';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path='/edit-profile' element={<EditProfilePage />} />
           <Route path="/search-results" element={<SearchResultsPage />} />
+          <Route path="/search-users" element={<SearchUserResultsPage />} />
           {/* 다른 라우트들 */}
           {/* <Route path="/posts/:postId" element={<PostDetailPage />} /> 상세 페이지 경로 추가 */}
         </Routes>

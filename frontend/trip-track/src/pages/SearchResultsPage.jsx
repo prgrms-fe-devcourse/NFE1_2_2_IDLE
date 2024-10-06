@@ -16,6 +16,13 @@ const SearchResultsPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const query = params.get('query') || '';
+
+    // '@'로 시작하는 검색어인 경우 사용자 검색 페이지로 리디렉션
+    if (query.startsWith('@')) {
+      navigate(`/search-users?query=${query}`);
+      return;
+    }
+
     updateSearchQuery(query);
     fetchPosts(query, {}, sortOrder); // 초기 필터 조건을 빈 객체로 설정하여 검색어만 반영
   }, [location.search, sortOrder]);
@@ -28,6 +35,12 @@ const SearchResultsPage = () => {
 
   // 검색어 입력 후 엔터키나 검색 버튼 클릭 시 실행
   const handleSearch = (query) => {
+    // '@'로 시작하면 사용자 검색 페이지로 이동
+    if (query.startsWith('@')) {
+      navigate(`/search-users?query=${query}`);
+      return;
+    }
+
     updateSearchQuery(query);
     fetchPosts(query, {}, sortOrder); // 필터 조건 없이 검색어만 반영
     navigate(`?query=${query}`);
