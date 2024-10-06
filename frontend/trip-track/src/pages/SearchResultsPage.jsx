@@ -8,8 +8,8 @@ import './SearchResultsPage.css';
 const SearchResultsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { searchQuery, posts, resultsCount, updateSearchQuery, fetchPosts } = useSearch();
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const { searchQuery, posts, updateSearchQuery, fetchPosts } = useSearch();
+  const [resultsCount, setResultsCount] = useState(0);
   const [sortOrder, setSortOrder] = useState('latest');
 
   // URL의 쿼리 파라미터에서 검색어 및 필터링 값 추출
@@ -29,8 +29,11 @@ const SearchResultsPage = () => {
 
   // 검색 결과가 업데이트될 때마다 화면에 반영
   useEffect(() => {
-    setFilteredPosts(posts);
-  }, [posts]);
+    // 검색 결과가 업데이트될 때 resultsCount가 정확하게 반영되도록 함
+    if (posts.length !== resultsCount) {
+      setResultsCount(posts.length);
+    }
+  }, [posts, resultsCount]);
 
   // 검색어 입력 후 엔터키나 검색 버튼 클릭 시 실행
   const handleSearch = (query) => {
@@ -59,7 +62,7 @@ const SearchResultsPage = () => {
           <h1>{`"${searchQuery}"에 대한 검색 결과`}</h1>
           <h2>포스트 {resultsCount}개를 발견했습니다</h2>
         </div>
-        <PostGrid searchQuery={searchQuery} posts={filteredPosts} />
+        <PostGrid searchQuery={searchQuery} posts={posts} />
       </div>
     </div>
   );
