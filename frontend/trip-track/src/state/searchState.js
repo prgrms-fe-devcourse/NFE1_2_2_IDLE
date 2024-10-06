@@ -12,6 +12,12 @@ export const searchPostsState = atom({
   default: [], // 초기값은 빈 배열
 });
 
+// 검색된 사용자 상태를 관리하는 atom (새로 추가)
+export const searchUsersState = atom({
+  key: 'searchUsersState',
+  default: [], // 초기값은 빈 배열
+});
+
 // 필터링 조건 상태를 관리하는 atom
 export const filtersState = atom({
   key: 'filtersState',

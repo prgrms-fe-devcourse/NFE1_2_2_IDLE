@@ -30,7 +30,6 @@ const SearchResultsPage = () => {
   // 검색 결과가 업데이트될 때마다 화면에 반영
   useEffect(() => {
     setFilteredPosts(posts);
-    console.log("Filtered Posts for Display:", posts); // 필터링된 포스트 데이터 확인
   }, [posts]);
 
   // 검색어 입력 후 엔터키나 검색 버튼 클릭 시 실행
