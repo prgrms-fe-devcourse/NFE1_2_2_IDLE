@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './SearchBar.css';
 import searchIcon from '../../assets/search-icon.svg';
 
 const SearchBar = ({ initialValue, onSearch }) => {
   const [query, setQuery] = useState(initialValue || '');
+
+  // 초기값 변경 시 query 상태 업데이트
+  useEffect(() => {
+    setQuery(initialValue || '');
+  }, [initialValue]);
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);

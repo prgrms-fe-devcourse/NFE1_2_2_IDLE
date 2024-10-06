@@ -12,15 +12,11 @@ const SearchUserResultsPage = () => {
     const { searchQuery, users, resultsCount, updateSearchQuery, fetchUsers } = useSearch();
   
     useEffect(() => {
-        console.log("Location search parameter has changed. Updating search query.");
         const params = new URLSearchParams(location.search);
         const query = params.get('query') || '';
 
-        console.log("Search query from URL params:", query);
-
         // '@'로 시작하지 않는 경우 포스트 검색 페이지로 리디렉션
         if (!query.startsWith('@')) {
-            console.log("Query does not start with '@'. Redirecting to search-results page.");
             navigate(`/search-results?query=${query}`);
             return;
         }
@@ -30,11 +26,9 @@ const SearchUserResultsPage = () => {
     }, [location.search]);
 
     const handleSearch = (query) => {
-        console.log("Handle search function called with query:", query);
 
         // '@'로 시작하지 않으면 포스트 검색 페이지로 이동
         if (!query.startsWith('@')) {
-            console.log("Query does not start with '@'. Redirecting to search-results page.");
             navigate(`/search-results?query=${query}`);
             return;
         }
