@@ -18,7 +18,7 @@ const CreateAndEditPostPage = () => {
   const [startDate, setStartDate] = useState(null); // 여행 시작 날짜
   const [endDate, setEndDate] = useState(null); // 여행 종료 날짜
   const [dateRange, setDateRange] = useState([]); // 선택된 날짜 범위 (여행의 각 날짜)
-  const [selectedDate, setSelectedDate] = useState(null); // 현재 선택된 날짜
+  const [selectedDate, setSelectedDate] = useState(''); // 현재 선택된 날짜
 
   // 지도와 마커 관련 상태
   const [selectedMarker, setSelectedMarker] = useState(null); // 선택된 마커
@@ -231,21 +231,32 @@ const CreateAndEditPostPage = () => {
       return;
     }
 
-    const range = [];
-    let currentDate = new Date(startDate); // 시작 날짜 복사
-    currentDate.setHours(0, 0, 0, 0); // 시간 초기화
+   // 날짜를 문자열로 처리 ('YYYY-MM-DD' 형식)
+  const parsedStartDate = startDate;
+  const parsedEndDate = endDate;
 
-    const finalDate = new Date(endDate); // 종료 날짜 복사
-    finalDate.setHours(0, 0, 0, 0); // 시간 초기화
+  const range = [];
+  let currentDate = new Date(parsedStartDate); // 시작 날짜 복사
 
-    // 시작일부터 종료일까지의 날짜 범위를 배열로 생성
-    while (currentDate <= finalDate) {
-      range.push(new Date(currentDate).toISOString().split('T')[0]); // 'YYYY-MM-DD' 형식으로 날짜 추가
-      currentDate.setDate(currentDate.getDate() + 1); // 하루씩 증가
-    }
+  // 시작일부터 종료일까지의 날짜 범위를 배열로 생성
+  while (currentDate <= parsedEndDate) {
+     // 날짜를 'YYYY-MM-DD' 형식의 문자열로 변환하여 저장
+     const year = currentDate.getFullYear();
+     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+     const day = String(currentDate.getDate()).padStart(2, '0');
+     const formattedDate = `${year}-${month}-${day}`;
+     
+     range.push(formattedDate); // 날짜를 문자열로 추가
+     currentDate.setDate(currentDate.getDate() + 1); // 하루씩 증가
+  }
 
-    setDateRange(range); // 날짜 범위 상태 설정
-    setSelectedDate(range[0]); // 첫 번째 날짜를 기본 선택
+  setDateRange(range); // 날짜 범위 상태 설정
+  setSelectedDate(range[0]); // 첫 번째 날짜를 기본 선택
+
+  // 로그로 확인
+  console.log('여행 시작 날짜:', parsedStartDate);
+  console.log('여행 종료 날짜:', parsedEndDate);
+  console.log('여행 기간 내 모든 날짜:', range);
 
     const initialMapsData = { ...mapsData };
     range.forEach((date) => {
@@ -484,7 +495,7 @@ const CreateAndEditPostPage = () => {
               onClick={() => setSelectedDate(date)} // 클릭 시 해당 날짜 선택
               className={`date-button ${selectedDate === date ? 'selected' : ''}`} // 선택된 날짜에 selected 클래스 추가
             >
-              {new Date(date).toDateString()} {/* 날짜를 문자열 형식으로 표시 */}
+              {date} {/* 날짜를 문자열 형식으로 표시 */}
             </button>
           ))}
         </div>
